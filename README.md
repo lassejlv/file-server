@@ -1,15 +1,3 @@
-# file-server
+# File Server
 
-To install dependencies:
-
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run src/main.ts
-```
-
-This project was created using `bun init` in bun v1.2.6. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+An easy-fast file server for uploading files, share them etc. Use the local file system or S3.
