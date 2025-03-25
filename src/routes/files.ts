@@ -12,6 +12,8 @@ router.get('/uploads/:id', async (c) => {
 
   if (!file) throw new Error('File not found')
 
+  if (file.is_private) return new Response(null, { status: 404 })
+
   const file_path = file.path
 
   switch (file.storage_type) {
@@ -19,7 +21,12 @@ router.get('/uploads/:id', async (c) => {
       const file = await LocalDriverGetFile(file_path)
 
       if (!file) throw new Error('File not found')
-      return new Response(file.stream(), { headers: { 'Content-Type': file.type } })
+      return new Response(file.stream(), {
+        headers: {
+          'Content-Type': file.type,
+          'Cache-Control': 'public, max-age=31536000',
+        },
+      })
     default:
       throw new Error('Unknown storage type')
   }
