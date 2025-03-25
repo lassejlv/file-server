@@ -22,6 +22,8 @@ export const LocalDriverGetFile = async (path: string, id: string): Promise<BunF
     const is_cached = await redis.get(id)
 
     if (is_cached) {
+      console.log('Cache hit')
+
       return Bun.file(is_cached)
     }
 
