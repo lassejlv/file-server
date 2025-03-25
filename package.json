@@ -21,6 +21,7 @@
     "@libsql/client": "^0.15.1",
     "drizzle-orm": "^0.41.0",
     "hono": "^4.7.5",
+    "ioredis": "^5.6.0",
     "zod": "^3.24.2"
   }
 }
