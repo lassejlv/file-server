@@ -27,9 +27,9 @@
 
         const data = await response.json()
 
-        if (data.file_url) {
+        if (data.file_path) {
           alert('File uploaded successfully and url copied to clipboard')
-          navigator.clipboard.writeText(window.location.origin + data.file_url)
+          navigator.clipboard.writeText(window.location.origin + data.file_path)
         } else {
           alert('File upload failed')
         }
