@@ -4,6 +4,11 @@ import FilesRouter from './routes/files'
 
 const app = new Hono()
 
+app.get('/', async (c) => {
+  const html = await Bun.file('upload.html').text()
+  return c.html(html)
+})
+
 app.route('/upload', UploadRouter)
 app.route('/files', FilesRouter)
 

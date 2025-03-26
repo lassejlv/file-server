@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>File Server</title>
+  </head>
+  <body class="container mx-auto py-12">
+    <h1 class="text-3xl font-bold text-center mb-4">File Server</h1>
+    <form id="upload-form" class="flex flex-col items-center justify-center">
+      <input type="file" name="file" class="border border-gray-300 rounded p-2 mb-4" />
+      <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">Upload</button>
+    </form>
+    <script>
+      const form = document.getElementById('upload-form')
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+
+        const formData = new FormData(form)
+
+        const response = await fetch('/upload', {
+          method: 'POST',
+          body: formData,
+        })
+
+        const data = await response.json()
+
+        if (data.success) {
+          alert('File uploaded successfully and url copied to clipboard')
+          navigator.clipboard.writeText(window.location.origin + data.file_url)
+        } else {
+          alert('File upload failed')
+        }
+      })
+    </script>
+  </body>
+</html>
