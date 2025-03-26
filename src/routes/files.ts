@@ -18,14 +18,17 @@ router.get('/uploads/:id', async (c) => {
 
   switch (file.storage_type) {
     case 'local':
-      const file = await LocalDriverGetFile(file_path)
-      console.log(file)
+      const file_data = await LocalDriverGetFile(file_path)
+      console.log(file_data)
 
-      if (!file) throw new Error('File not found')
-      return new Response(file.stream(), {
+      if (!file_data) throw new Error('File not found')
+      return new Response(file_data.stream(), {
         headers: {
-          'Content-Type': file.type,
+          'Content-Type': file_data.type,
+          'Content-Length': file.size.toString(),
           'Cache-Control': 'public, max-age=31536000',
+          'Accept-Ranges': 'bytes',
+          ETag: `${file.id}`,
         },
       })
     default:
