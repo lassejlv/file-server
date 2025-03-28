@@ -6,5 +6,4 @@ COPY . .
 RUN bun install --no-save
 RUN bun run build
 
-CMD [ "bun", "db:push"]
-ENTRYPOINT [ "./server" ]
+CMD [ "bun", "db:push", "&&", "./server" ]
