@@ -3,6 +3,7 @@ import { db } from '../db'
 import { eq } from 'drizzle-orm'
 import { files } from '../db/schema'
 import { LocalDriverGetFile } from '../drivers/local'
+import { S3DriverGetFile} from "../drivers/s3"
 
 const router = new Hono()
 
@@ -15,6 +16,7 @@ router.get('/uploads/:id', async (c) => {
   if (file.is_private) return new Response(null, { status: 404 })
 
   const file_path = file.path
+  console.log(file_path)
 
   switch (file.storage_type) {
     case 'local':
@@ -25,6 +27,21 @@ router.get('/uploads/:id', async (c) => {
       return new Response(file_data.stream(), {
         headers: {
           'Content-Type': file_data.type,
+          'Content-Length': file.size.toString(),
+          'Cache-Control': 'public, max-age=31536000',
+          'Accept-Ranges': 'bytes',
+          ETag: `${file.id}`,
+        },
+      })
+    case 's3':
+      const file_data_s3 = await S3DriverGetFile(file_path)
+      if (!file_data_s3) throw new Error('File not found')
+
+      // console.log(file.path.split(".").pop())
+
+      return new Response(file_data_s3, {
+        headers: {
+          'Content-Type': file.path.split('.').pop() || 'application/octet-stream',
           'Content-Length': file.size.toString(),
           'Cache-Control': 'public, max-age=31536000',
           'Accept-Ranges': 'bytes',

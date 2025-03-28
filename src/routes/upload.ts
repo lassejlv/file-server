@@ -5,6 +5,7 @@ import { LocalDriverUpload } from '../drivers/local'
 import type { BunFile } from 'bun'
 import { db } from '../db'
 import { files } from '../db/schema'
+import { S3DriverUpload } from '../drivers/s3'
 
 const MAX_FILE_SIZE = Number(process.env.FILE_SERVER_MAX_FILE_SIZE) || 50 * 1024 * 1024 // 50MB
 const ALLOWED_FILE_TYPES = process.env.FILE_SERVER_ALLOWED_FILE_TYPES?.split(',') || []
@@ -32,6 +33,13 @@ router.post('/', zValidator('form', UploadSchema), async (c) => {
       if (!filePath) throw new Error('Failed to upload file')
 
       file_path = filePath
+      break
+    case 's3':
+      const filePathS3 = await S3DriverUpload(body.file, body.file.name)
+
+      if (!filePathS3) throw new Error('Failed to upload file to S3')
+
+      file_path = filePathS3
       break
 
     default:
