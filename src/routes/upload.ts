@@ -35,7 +35,7 @@ router.post('/', zValidator('form', UploadSchema), async (c) => {
       file_path = filePath
       break
     case 's3':
-      const filePathS3 = await S3DriverUpload(body.file, body.file.name)
+      const filePathS3 = await S3DriverUpload(body.file)
 
       if (!filePathS3) throw new Error('Failed to upload file to S3')
 

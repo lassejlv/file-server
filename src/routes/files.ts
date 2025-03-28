@@ -16,12 +16,10 @@ router.get('/uploads/:id', async (c) => {
   if (file.is_private) return new Response(null, { status: 404 })
 
   const file_path = file.path
-  console.log(file_path)
 
   switch (file.storage_type) {
     case 'local':
       const file_data = await LocalDriverGetFile(file_path)
-      console.log(file_data)
 
       if (!file_data) throw new Error('File not found')
       return new Response(file_data.stream(), {
@@ -37,7 +35,6 @@ router.get('/uploads/:id', async (c) => {
       const file_data_s3 = await S3DriverGetFile(file_path)
       if (!file_data_s3) throw new Error('File not found')
 
-      // console.log(file.path.split(".").pop())
 
       return new Response(file_data_s3, {
         headers: {
