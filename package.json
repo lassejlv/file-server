@@ -6,8 +6,8 @@
     "dev": "bun --watch .",
     "start": "bun db:push && ./server",
     "build": "bun build --compile --minify . --outfile server",
-    "db:generate": "bunx drizzle-kit generate",
-    "db:push": "bunx drizzle-kit push"
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push"
   },
   "devDependencies": {
     "@types/bun": "latest",
