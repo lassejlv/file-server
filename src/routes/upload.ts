@@ -1,6 +1,6 @@
 import { zValidator } from '@hono/zod-validator'
 import { Hono } from 'hono'
-import { z } from 'zod'
+import * as z from 'zod'
 import { LocalDriverUpload } from '../drivers/local'
 import type { BunFile } from 'bun'
 import { db } from '../db'
@@ -21,7 +21,7 @@ router.post('/', zValidator('form', UploadSchema), async (c) => {
   const body = c.req.valid('form')
 
   if (body.file.size > MAX_FILE_SIZE) throw new Error('File too large')
-  if (!ALLOWED_FILE_TYPES.includes(body.file.type) && !ALLOWED_FILE_TYPES.includes("*")) throw new Error('File type not allowed')
+  if (!ALLOWED_FILE_TYPES.includes(body.file.type) && !ALLOWED_FILE_TYPES.includes('*')) throw new Error('File type not allowed')
   if (!STORAGE_TYPE) throw new Error('No storage type specified')
 
   let file_path = ''

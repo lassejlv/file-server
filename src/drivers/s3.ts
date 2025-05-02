@@ -1,4 +1,4 @@
-import  { type BunFile, s3 } from "bun";
+import { type BunFile, s3 } from 'bun'
 
 export const S3DriverUpload = async (file: BunFile): Promise<string | null> => {
   try {
