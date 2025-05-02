@@ -59,7 +59,7 @@ router.get(
       limit: z
         .string()
         .optional()
-        .refine((val) => isNaN(Number(val)), { message: 'limit must be a number' }),
+        .refine((val) => !isNaN(Number(val)), { message: 'limit must be a number' }),
     })
   ),
   async (c) => {
