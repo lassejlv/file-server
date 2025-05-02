@@ -12,6 +12,12 @@
       <input type="file" name="file" class="border border-gray-300 rounded p-2 mb-4" />
       <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">Upload</button>
     </form>
+
+    <div id="file-list" class="mt-8">
+      <h2 class="text-2xl font-bold mb-4">Uploaded Files</h2>
+      <ul id="files" class="list-disc pl-5"></ul>
+    </div>
+
     <script>
       const form = document.getElementById('upload-form')
 
@@ -34,6 +40,43 @@
           alert('File upload failed')
         }
       })
+
+      function formatSize(size) {
+        const i = Math.floor(Math.log(size) / Math.log(1024))
+        return parseFloat((size / Math.pow(1024, i)).toFixed(2)) + ' ' + ['B', 'KB', 'MB', 'GB'][i]
+      }
+      function formatDate(date) {
+        return new Date(date).toLocaleString()
+      }
+
+      async function fetchFiles() {
+        const response = await fetch('/files/uploads')
+
+        if (!response.ok) {
+          console.error('Failed to fetch files')
+          return
+        }
+
+        const data = await response.json()
+        const fileList = document.getElementById('files')
+        fileList.innerHTML = ''
+        // A file is an object with properties: id, name,size, storage_type, created_at
+        data.files.forEach((file) => {
+          const li = document.createElement('li')
+          li.className = 'mb-2'
+          li.innerHTML = `
+            <strong>${file.name}</strong> (${formatSize(file.size)})<br />
+            <small>Uploaded on ${formatDate(file.created_at)}</small><br />
+            <a href="/files/uploads/${file.id}" class="text-blue-500">Download</a>
+
+            <footer class="text-gray-500">
+              <span>Storage Type: ${file.storage_type}</span>
+              <span class="ml-4">ID: ${file.id}</span>
+            </footer>
+          `
+          fileList.appendChild(li)
+        })
+      }
     </script>
   </body>
 </html>
