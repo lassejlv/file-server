@@ -61,7 +61,7 @@
         const fileList = document.getElementById('files')
         fileList.innerHTML = ''
         // A file is an object with properties: id, name,size, storage_type, created_at
-        data.files.forEach((file) => {
+        data.forEach((file) => {
           const li = document.createElement('li')
           li.className = 'mb-2'
           li.innerHTML = `
