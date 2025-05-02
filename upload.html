@@ -77,6 +77,11 @@
           fileList.appendChild(li)
         })
       }
+
+      // Fetch files on page load
+      document.addEventListener('DOMContentLoaded', fetchFiles)
+      // Fetch files every 5 seconds
+      setInterval(fetchFiles, 5000)
     </script>
   </body>
 </html>
