@@ -50,7 +50,7 @@
       }
 
       async function fetchFiles() {
-        const response = await fetch('/files/uploads')
+        const response = await fetch('/files/uploads?limit=250')
 
         if (!response.ok) {
           console.error('Failed to fetch files')
@@ -61,10 +61,12 @@
         const fileList = document.getElementById('files')
         fileList.innerHTML = ''
         // A file is an object with properties: id, name,size, storage_type, created_at
-        data.forEach((file) => {
-          const li = document.createElement('li')
-          li.className = 'mb-2'
-          li.innerHTML = `
+        data
+          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+          .forEach((file) => {
+            const li = document.createElement('li')
+            li.className = 'mb-2'
+            li.innerHTML = `
             <strong>${file.name}</strong> (${formatSize(file.size)})<br />
             <small>Uploaded on ${formatDate(file.created_at)}</small><br />
             <a href="/files/uploads/${file.id}" class="text-blue-500">Download</a>
@@ -74,8 +76,8 @@
               <span class="ml-4">ID: ${file.id}</span>
             </footer>
           `
-          fileList.appendChild(li)
-        })
+            fileList.appendChild(li)
+          })
       }
 
       // Fetch files on page load
