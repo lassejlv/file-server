@@ -10,8 +10,7 @@
         body {
           @apply font-sans bg-gray-100 text-gray-800;
         }
-        h1,
-        h2 {
+        h1, h2 {
           @apply text-center mb-6;
         }
         h1 {
@@ -20,15 +19,18 @@
         h2 {
           @apply text-2xl font-bold text-gray-700;
         }
-        input[type='file'] {
+        input[type="file"] {
           @apply block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer;
         }
         button {
-          @apply transition-colors duration-200;
+           @apply transition-colors duration-200;
         }
-        button[type='submit'] {
+        button[type="submit"] {
           @apply bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center;
         }
+         .secondary-button {
+            @apply bg-gray-300 text-gray-700 font-semibold py-2 px-6 rounded-full hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center;
+         }
         .spinner {
           border: 4px solid rgba(255, 255, 255, 0.3);
           border-top: 4px solid #fff;
@@ -38,13 +40,14 @@
           animation: spin 1s linear infinite;
           margin-right: 8px; /* Space between spinner and text */
         }
+         .spinner-gray {
+            border: 4px solid rgba(156, 163, 175, 0.3); /* gray-400 with alpha */
+            border-top: 4px solid #6b7280; /* gray-500 */
+         }
+
         @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
         .file-item {
           @apply bg-white p-4 rounded-lg shadow-md flex flex-col md:flex-row justify-between items-start md:items-center mb-4 transition-transform duration-200 hover:scale-[1.01];
@@ -64,7 +67,7 @@
         .file-actions a {
           @apply text-blue-500 hover:underline mr-4 last:mr-0;
         }
-        .file-actions button {
+         .file-actions button {
           @apply text-red-500 hover:underline ml-4 last:mr-0 bg-transparent border-none cursor-pointer p-0;
         }
         .upload-progress-container {
@@ -76,44 +79,44 @@
 
         /* Toast Container */
         #toast-container {
-          @apply fixed top-6 right-6 z-50 flex flex-col space-y-4;
+            @apply fixed top-6 right-6 z-50 flex flex-col space-y-4;
         }
 
         /* Toast Styles */
         .toast {
-          @apply flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 transition-opacity duration-300 ease-out;
+            @apply flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 transition-opacity duration-300 ease-out;
         }
         .toast.success {
-          @apply text-green-500 dark:text-green-400;
+            @apply text-green-500 dark:text-green-400;
         }
-        .toast.error {
-          @apply text-red-500 dark:text-red-400;
+         .toast.error {
+            @apply text-red-500 dark:text-red-400;
         }
-        .toast.info {
-          @apply text-blue-500 dark:text-blue-400;
+         .toast.info {
+            @apply text-blue-500 dark:text-blue-400;
         }
         .toast-icon {
-          @apply inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg;
+            @apply inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg;
         }
         .toast-icon.success {
-          @apply bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200;
+            @apply bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200;
         }
         .toast-icon.error {
-          @apply bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200;
+            @apply bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200;
         }
         .toast-icon.info {
-          @apply bg-blue-100 text-blue-500 dark:bg-blue-800 dark:text-blue-200;
+            @apply bg-blue-100 text-blue-500 dark:bg-blue-800 dark:text-blue-200;
         }
         .toast-message {
-          @apply ml-3 text-sm font-normal flex-grow;
+            @apply ml-3 text-sm font-normal flex-grow;
         }
-        .toast-close-button {
-          @apply ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700;
+         .toast-close-button {
+            @apply ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700;
         }
 
         /* Search Input Styling */
         #search-input {
-          @apply block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mb-4;
+            @apply block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mb-4;
         }
       }
     </style>
@@ -123,30 +126,31 @@
 
     <form id="upload-form" class="flex flex-col items-center justify-center bg-white p-8 rounded-lg shadow-lg mb-8">
       <label for="file-upload" class="w-full">
-        <input type="file" name="file" id="file-upload" class="mb-4" multiple required />
+          <input type="file" name="file" id="file-upload" class="mb-4" multiple required/>
       </label>
 
       <div id="upload-queue" class="w-full mb-4 hidden">
-        <h3 class="text-lg font-semibold mb-2">Upload Queue:</h3>
-        <ul id="upload-items" class="text-sm text-gray-700 space-y-1">
-          <!-- Upload items will be added here -->
-        </ul>
+          <h3 class="text-lg font-semibold mb-2">Upload Queue:</h3>
+          <ul id="upload-items" class="text-sm text-gray-700 space-y-1">
+              <!-- Upload items will be added here -->
+          </ul>
+          <button type="button" id="clear-queue-button" class="secondary-button mt-4 text-sm">Clear Queue</button>
       </div>
 
       <button type="submit" id="upload-button">
-        <span id="button-text">Upload Files</span>
-        <div id="button-spinner" class="spinner hidden"></div>
+          <span id="button-text">Upload Files</span>
+          <div id="button-spinner" class="spinner hidden"></div>
       </button>
     </form>
 
     <div class="mb-6">
-      <input type="text" id="search-input" placeholder="Search files..." />
+        <input type="text" id="search-input" placeholder="Search files..." />
     </div>
 
     <div id="file-list">
       <h2>Uploaded Files</h2>
       <div id="files">
-        <p class="text-center text-gray-600">Loading files...</p>
+        <p class="text-center text-gray-600"><div class="spinner spinner-gray mx-auto mb-2"></div> Loading files...</p>
       </div>
     </div>
 
@@ -163,8 +167,10 @@
       const uploadItemsList = document.getElementById('upload-items')
       const searchInput = document.getElementById('search-input')
       const toastContainer = document.getElementById('toast-container')
+      const clearQueueButton = document.getElementById('clear-queue-button')
 
-      let allFiles = [] // To store all fetched files for search
+      let allFiles = []; // To store all fetched files for search
+      let currentUploads = []; // Keep track of ongoing uploads if needed (not used for aborting in this version)
 
       // --- Toast Notification System ---
       function showToast(message, type = 'info', duration = 5000) {
@@ -173,11 +179,9 @@
         toast.setAttribute('role', 'alert')
 
         const iconHtml = {
-          success:
-            '<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/></svg>',
-          error:
-            '<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 1 1-2 0v-3a1 1 0 1 1 2 0v3Z"/></svg>',
-          info: '<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 1 1-2 0V6a1 1 0 0 1 2 0v5Z"/></svg>',
+            'success': '<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/></svg>',
+            'error': '<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 1 1-2 0v-3a1 1 0 1 1 2 0v3Z"/></svg>',
+            'info': '<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 1 1-2 0V6a1 1 0 0 1 2 0v5Z"/></svg>'
         }
 
         toast.innerHTML = `
@@ -198,9 +202,10 @@
 
         // Animate in
         requestAnimationFrame(() => {
-          toast.classList.remove('opacity-0', 'translate-x-full')
-          toast.classList.add('opacity-100', 'translate-x-0')
+             toast.classList.remove('opacity-0', 'translate-x-full');
+             toast.classList.add('opacity-100', 'translate-x-0');
         })
+
 
         const closeButton = toast.querySelector('.toast-close-button')
         closeButton.addEventListener('click', () => dismissToast(toast))
@@ -211,10 +216,11 @@
       }
 
       function dismissToast(toast) {
-        toast.classList.remove('opacity-100', 'translate-x-0')
-        toast.classList.add('opacity-0', 'translate-x-full')
-        toast.addEventListener('transitionend', () => toast.remove())
+          toast.classList.remove('opacity-100', 'translate-x-0');
+          toast.classList.add('opacity-0', 'translate-x-full');
+          toast.addEventListener('transitionend', () => toast.remove());
       }
+
 
       // --- File Handling and Upload ---
 
@@ -228,64 +234,64 @@
 
       async function uploadFile(file, listItem) {
         return new Promise((resolve, reject) => {
-          const formData = new FormData()
-          formData.append('file', file)
+            const formData = new FormData();
+            formData.append('file', file);
 
-          const xhr = new XMLHttpRequest()
-          const url = '/upload' // Your upload endpoint
+            const xhr = new XMLHttpRequest();
+            const url = '/upload'; // Your upload endpoint
 
-          xhr.open('POST', url, true)
+            xhr.open('POST', url, true);
 
-          xhr.upload.onprogress = (event) => {
-            if (event.lengthComputable) {
-              const percentComplete = (event.loaded / event.total) * 100
-              updateUploadProgress(listItem, percentComplete)
-            }
-          }
-
-          xhr.onload = () => {
-            if (xhr.status >= 200 && xhr.status < 300) {
-              try {
-                const data = JSON.parse(xhr.responseText)
-                if (data.file_path) {
-                  updateUploadStatus(listItem, 'Success', 'text-green-600')
-                  showToast(`${file.name} uploaded successfully!`, 'success')
-                  resolve(data)
-                } else {
-                  updateUploadStatus(listItem, 'Failed', 'text-red-600')
-                  showToast(`${file.name} upload failed: ${data.error || 'Unknown error'}`, 'error')
-                  reject(new Error(data.error || 'Unknown upload error'))
+            xhr.upload.onprogress = (event) => {
+                if (event.lengthComputable) {
+                    const percentComplete = (event.loaded / event.total) * 100;
+                    updateUploadProgress(listItem, percentComplete);
                 }
-              } catch (e) {
-                updateUploadStatus(listItem, 'Failed', 'text-red-600')
-                showToast(`${file.name} upload failed: Invalid server response.`, 'error')
-                console.error('Failed to parse JSON response:', e)
-                reject(e)
-              }
-            } else {
-              updateUploadStatus(listItem, 'Failed', 'text-red-600')
-              showToast(`${file.name} upload failed with status: ${xhr.status}`, 'error')
-              console.error('Upload failed with status:', xhr.status, xhr.responseText)
-              reject(new Error(`Upload failed with status ${xhr.status}`))
-            }
-          }
+            };
 
-          xhr.onerror = () => {
-            updateUploadStatus(listItem, 'Failed', 'text-red-600')
-            showToast(`${file.name} upload failed due to network error.`, 'error')
-            console.error('Network error during upload of', file.name)
-            reject(new Error('Network error'))
-          }
+            xhr.onload = () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    try {
+                        const data = JSON.parse(xhr.responseText);
+                        if (data.file_path) {
+                            updateUploadStatus(listItem, 'Success', 'text-green-600');
+                            showToast(`${file.name} uploaded successfully!`, 'success');
+                            resolve(data);
+                        } else {
+                            updateUploadStatus(listItem, 'Failed', 'text-red-600');
+                            showToast(`${file.name} upload failed: ${data.error || 'Unknown error'}`, 'error');
+                            reject(new Error(data.error || 'Unknown upload error'));
+                        }
+                    } catch (e) {
+                        updateUploadStatus(listItem, 'Failed', 'text-red-600');
+                        showToast(`${file.name} upload failed: Invalid server response.`, 'error');
+                        console.error('Failed to parse JSON response:', e);
+                        reject(e);
+                    }
+                } else {
+                    updateUploadStatus(listItem, 'Failed', 'text-red-600');
+                     showToast(`${file.name} upload failed with status: ${xhr.status}`, 'error');
+                    console.error('Upload failed with status:', xhr.status, xhr.responseText);
+                    reject(new Error(`Upload failed with status ${xhr.status}`));
+                }
+            };
 
-          updateUploadStatus(listItem, 'Uploading...', 'text-blue-600')
-          xhr.send(formData)
-        })
+            xhr.onerror = () => {
+                updateUploadStatus(listItem, 'Failed', 'text-red-600');
+                 showToast(`${file.name} upload failed due to network error.`, 'error');
+                console.error('Network error during upload of', file.name);
+                reject(new Error('Network error'));
+            };
+
+            updateUploadStatus(listItem, 'Uploading...', 'text-blue-600');
+            xhr.send(formData);
+        });
       }
 
       function addFileToQueue(file) {
-        const listItem = document.createElement('li')
-        listItem.className = 'flex items-center justify-between'
-        listItem.innerHTML = `
+          const listItem = document.createElement('li');
+          listItem.className = 'flex items-center justify-between';
+          listItem.innerHTML = `
               <span>${file.name} (${formatSize(file.size)})</span>
               <div class="flex items-center">
                   <span class="status mr-2 text-gray-600 text-xs">Pending</span>
@@ -293,65 +299,99 @@
                       <div class="upload-progress-bar h-2 bg-green-500 rounded" style="width: 0%;"></div>
                   </div>
               </div>
-          `
-        uploadItemsList.appendChild(listItem)
-        return listItem
+          `;
+          uploadItemsList.appendChild(listItem);
+          return listItem;
       }
 
       function updateUploadStatus(listItem, statusText, statusClass) {
-        const statusSpan = listItem.querySelector('.status')
-        statusSpan.textContent = statusText
-        statusSpan.className = `status mr-2 text-xs ${statusClass}`
+          const statusSpan = listItem.querySelector('.status');
+          statusSpan.textContent = statusText;
+          statusSpan.className = `status mr-2 text-xs ${statusClass}`;
       }
 
       function updateUploadProgress(listItem, percent) {
-        const progressContainer = listItem.querySelector('.upload-progress-container')
-        const progressBar = listItem.querySelector('.upload-progress-bar')
-        progressContainer.classList.remove('hidden')
-        progressBar.style.width = `${percent}%`
+          const progressContainer = listItem.querySelector('.upload-progress-container');
+          const progressBar = listItem.querySelector('.upload-progress-bar');
+          progressContainer.classList.remove('hidden');
+          progressBar.style.width = `${percent}%`;
+      }
+
+      function clearUploadQueue() {
+          uploadItemsList.innerHTML = ''; // Clear the list items
+          uploadQueue.classList.add('hidden'); // Hide the queue section
+          fileInput.value = ''; // Clear the selected files from the input
+          showToast('Upload queue cleared.', 'info', 2000);
       }
 
       async function processUploadQueue(files) {
-        uploadButton.disabled = true
-        buttonText.textContent = 'Uploading...'
-        buttonSpinner.classList.remove('hidden')
-        uploadQueue.classList.remove('hidden')
-        uploadItemsList.innerHTML = '' // Clear previous queue
+          uploadButton.disabled = true;
+          buttonText.textContent = 'Uploading...';
+          buttonSpinner.classList.remove('hidden');
+          clearQueueButton.disabled = true; // Disable clear during upload
 
-        for (const file of files) {
-          const listItem = addFileToQueue(file)
-          try {
-            await uploadFile(file, listItem)
-          } catch (error) {
-            // Error already handled and shown in uploadFile, just continue
+          uploadQueue.classList.remove('hidden');
+          uploadItemsList.innerHTML = ''; // Clear previous queue
+
+          for (const file of files) {
+              const listItem = addFileToQueue(file);
+              try {
+                  await uploadFile(file, listItem);
+              } catch (error) {
+                  // Error already handled and shown in uploadFile, just continue
+              }
           }
-        }
 
-        uploadButton.disabled = false
-        buttonText.textContent = 'Upload Files'
-        buttonSpinner.classList.add('hidden')
-        fileInput.value = '' // Clear input
-        fetchFiles() // Refresh the file list after uploads
+          uploadButton.disabled = false;
+          buttonText.textContent = 'Upload Files';
+          buttonSpinner.classList.add('hidden');
+          clearQueueButton.disabled = false; // Re-enable clear
+          // After uploads, clear the input and potentially the visual queue display
+          fileInput.value = '';
+          // Consider leaving the queue visible with statuses, or clear it here
+          // For now, we'll leave the statuses visible until new files are selected
+          fetchFiles(); // Refresh the file list after uploads
       }
 
+
       form.addEventListener('submit', async (e) => {
-        e.preventDefault()
-        const files = fileInput.files
+        e.preventDefault();
+        const files = fileInput.files;
         if (files.length > 0) {
-          processUploadQueue(files)
+            processUploadQueue(files);
         } else {
-          showToast('Please select files to upload.', 'info')
+             showToast('Please select files to upload.', 'info');
         }
-      })
+      });
+
+      fileInput.addEventListener('change', () => {
+        // Show the queue container when files are selected
+        if (fileInput.files.length > 0) {
+            uploadQueue.classList.remove('hidden');
+             // Populate the queue list immediately when files are selected
+            uploadItemsList.innerHTML = ''; // Clear previous selections
+            Array.from(fileInput.files).forEach(file => {
+                addFileToQueue(file); // Just add to list with 'Pending' status
+            });
+        } else {
+            // Hide if selection is cleared (e.g., by user or clear queue button)
+            uploadQueue.classList.add('hidden');
+             uploadItemsList.innerHTML = ''; // Clear list if input is cleared
+        }
+         // Enable/disable upload button based on file selection
+         uploadButton.disabled = fileInput.files.length === 0;
+          clearQueueButton.disabled = fileInput.files.length === 0;
+      });
+
 
       // --- File Listing and Search ---
 
       function renderFiles(filesToRender) {
         fileListContainer.innerHTML = '' // Clear current list
 
-        if (filesToRender.length === 0) {
-          fileListContainer.innerHTML = '<p class="text-center text-gray-600">No files found.</p>'
-          return
+         if (filesToRender.length === 0) {
+            fileListContainer.innerHTML = '<p class="text-center text-gray-600">No files found.</p>';
+            return
         }
 
         filesToRender
@@ -378,86 +418,122 @@
           })
       }
 
+
       async function fetchFiles() {
-        fileListContainer.innerHTML = '<p class="text-center text-gray-600"><div class="spinner mx-auto mb-2"></div> Loading files...</p>'
+        // Only show loading spinner if the list is currently empty
+        if (allFiles.length === 0) {
+             fileListContainer.innerHTML = '<p class="text-center text-gray-600"><div class="spinner spinner-gray mx-auto mb-2"></div> Loading files...</p>'
+        }
+
         const response = await fetch('/files/uploads?limit=250')
 
         if (!response.ok) {
           console.error('Failed to fetch files')
           fileListContainer.innerHTML = '<p class="text-center text-red-600">Failed to load files.</p>'
-          showToast('Failed to fetch file list.', 'error')
+          showToast('Failed to fetch file list.', 'error');
           return
         }
 
         const data = await response.json()
         allFiles = data // Store all files for search
-        renderFiles(allFiles) // Render initially
-        showToast('File list updated.', 'info', 2000) // Small info toast
+        filterFiles(); // Render based on current search term (or all if empty)
+        // showToast('File list updated.', 'info', 2000); // Optional: show update toast
+
       }
 
       function filterFiles() {
-        const searchTerm = searchInput.value.toLowerCase()
-        const filteredFiles = allFiles.filter(
-          (file) =>
-            file.name.toLowerCase().includes(searchTerm) || file.storage_type.toLowerCase().includes(searchTerm) || file.id.toLowerCase().includes(searchTerm) // Maybe search by ID too?
-        )
-        renderFiles(filteredFiles)
+          const searchTerm = searchInput.value.toLowerCase();
+          const filteredFiles = allFiles.filter(file =>
+              file.name.toLowerCase().includes(searchTerm) ||
+              file.storage_type.toLowerCase().includes(searchTerm) ||
+              (file.id && file.id.toLowerCase().includes(searchTerm)) // Check if id exists
+          );
+          renderFiles(filteredFiles);
       }
 
       // --- Delete Functionality ---
       async function deleteFile(fileId, buttonElement) {
-        if (!confirm('Are you sure you want to delete this file?')) {
-          return
-        }
-
-        buttonElement.disabled = true // Disable button during delete
-        buttonElement.textContent = 'Deleting...'
-
-        try {
-          const response = await fetch(`/files/uploads/${fileId}`, {
-            method: 'DELETE',
-          })
-
-          if (!response.ok) {
-            const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
-            console.error('Failed to delete file:', response.status, errorData)
-            showToast(`Failed to delete file: ${errorData.error || response.statusText}`, 'error')
-            buttonElement.disabled = false
-            buttonElement.textContent = 'Delete'
-            return
+          if (!confirm('Are you sure you want to delete this file? This cannot be undone.')) {
+              return;
           }
 
-          showToast('File deleted successfully!', 'success')
-          // Remove the file from the local allFiles array
-          allFiles = allFiles.filter((file) => file.id !== fileId)
-          // Re-render the filtered list if search is active, otherwise re-render allFiles
-          filterFiles() // This handles both cases
-        } catch (error) {
-          console.error('Network error during file deletion:', error)
-          showToast('Network error during file deletion.', 'error')
-          buttonElement.disabled = false
-          buttonElement.textContent = 'Delete'
-        }
+          buttonElement.disabled = true; // Disable button during delete
+          buttonElement.textContent = 'Deleting...';
+
+
+          try {
+              const response = await fetch(`/files/uploads/${fileId}`, {
+                  method: 'DELETE',
+              });
+
+              if (!response.ok) {
+                  const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+                  console.error('Failed to delete file:', response.status, errorData);
+                  showToast(`Failed to delete file: ${errorData.error || response.statusText}`, 'error');
+                  buttonElement.disabled = false;
+                  buttonElement.textContent = 'Delete';
+                  return;
+              }
+
+              showToast('File deleted successfully!', 'success');
+              // Remove the file from the local allFiles array
+              allFiles = allFiles.filter(file => file.id !== fileId);
+              // Re-render the filtered list if search is active, otherwise re-render allFiles
+              filterFiles(); // This handles both cases
+
+          } catch (error) {
+              console.error('Network error during file deletion:', error);
+              showToast('Network error during file deletion.', 'error');
+              buttonElement.disabled = false;
+              buttonElement.textContent = 'Delete';
+          }
       }
+
 
       // --- Utility Functions ---
       async function copyToClipboard(text) {
-        try {
-          await navigator.clipboard.writeText(text)
-          showToast('Link copied to clipboard!', 'success', 3000) // Shorter success toast
-        } catch (err) {
-          console.error('Failed to copy text: ', err)
-          showToast('Failed to copy link.', 'error')
-        }
+          try {
+              await navigator.clipboard.writeText(text);
+              showToast('Link copied to clipboard!', 'success', 3000); // Shorter success toast
+          } catch (err) {
+              console.error('Failed to copy text: ', err);
+              showToast('Failed to copy link.', 'error');
+          }
       }
 
       // --- Event Listeners ---
-      searchInput.addEventListener('input', filterFiles)
+      searchInput.addEventListener('input', filterFiles);
+      clearQueueButton.addEventListener('click', clearUploadQueue);
 
-      // Initial fetch on page load
-      document.addEventListener('DOMContentLoaded', fetchFiles)
+      // Show queue and update button/clear button state when files are selected
+      fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            uploadQueue.classList.remove('hidden');
+            uploadButton.disabled = false;
+            clearQueueButton.disabled = false;
+             // Populate the queue list immediately when files are selected
+            uploadItemsList.innerHTML = ''; // Clear previous selections
+            Array.from(fileInput.files).forEach(file => {
+                addFileToQueue(file); // Just add to list with 'Pending' status
+            });
+        } else {
+            uploadQueue.classList.add('hidden');
+            uploadButton.disabled = true;
+            clearQueueButton.disabled = true;
+             uploadItemsList.innerHTML = ''; // Clear list if input is cleared
+        }
+      });
+
+      // Disable upload and clear button initially
+      document.addEventListener('DOMContentLoaded', () => {
+           uploadButton.disabled = true;
+           clearQueueButton.disabled = true;
+           fetchFiles(); // Initial fetch
+      });
+
       // Fetch files periodically (still useful to catch external changes)
       setInterval(fetchFiles, 15000) // Maybe less frequent polling now
+
     </script>
   </body>
 </html>
