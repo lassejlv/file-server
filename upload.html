@@ -4,45 +4,139 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <title>File Server</title>
+    <title>Secure File Server</title>
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          @apply font-sans bg-gray-100 text-gray-800;
+        }
+        h1,
+        h2 {
+          @apply text-center mb-6;
+        }
+        h1 {
+          @apply text-4xl font-extrabold text-blue-700;
+        }
+        h2 {
+          @apply text-2xl font-bold text-gray-700;
+        }
+        input[type='file'] {
+          @apply block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100;
+        }
+        button[type='submit'] {
+          @apply bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700 transition-colors duration-200;
+        }
+        .file-item {
+          @apply bg-white p-4 rounded-lg shadow-md flex flex-col md:flex-row justify-between items-start md:items-center mb-4 transition-transform duration-200 hover:scale-[1.01];
+        }
+        .file-info {
+          @apply flex-grow mr-4;
+        }
+        .file-name {
+          @apply text-lg font-semibold text-blue-800;
+        }
+        .file-meta {
+          @apply text-sm text-gray-500;
+        }
+        .file-actions {
+          @apply flex flex-col md:flex-row items-start md:items-center mt-2 md:mt-0;
+        }
+        .file-actions a {
+          @apply text-blue-500 hover:underline mr-4 last:mr-0;
+        }
+        .upload-progress {
+          @apply w-full bg-gray-200 rounded-full h-2 mt-2;
+        }
+        .upload-progress-bar {
+          @apply bg-green-500 h-2 rounded-full transition-all duration-300 ease-in-out;
+        }
+      }
+    </style>
   </head>
-  <body class="container mx-auto py-12">
-    <h1 class="text-3xl font-bold text-center mb-4">File Server</h1>
-    <form id="upload-form" class="flex flex-col items-center justify-center">
-      <input type="file" name="file" class="border border-gray-300 rounded p-2 mb-4" />
-      <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">Upload</button>
+  <body class="container mx-auto py-12 px-4">
+    <h1>File Server</h1>
+    <form id="upload-form" class="flex flex-col items-center justify-center bg-white p-8 rounded-lg shadow-lg mb-8">
+      <input type="file" name="file" class="mb-4" required />
+      <div id="upload-status" class="w-full mb-4 hidden">
+        <div class="upload-progress">
+          <div id="progress-bar" class="upload-progress-bar" style="width: 0%"></div>
+        </div>
+        <p id="progress-text" class="text-sm text-center mt-1 text-gray-600">Uploading...</p>
+      </div>
+      <button type="submit">Upload</button>
     </form>
 
-    <div id="file-list" class="mt-8">
-      <h2 class="text-2xl font-bold mb-4">Uploaded Files</h2>
-      <ul id="files" class="list-disc pl-5"></ul>
+    <div id="file-list">
+      <h2>Uploaded Files</h2>
+      <div id="files"></div>
     </div>
 
     <script>
       const form = document.getElementById('upload-form')
+      const fileListContainer = document.getElementById('files')
+      const uploadStatus = document.getElementById('upload-status')
+      const progressBar = document.getElementById('progress-bar')
+      const progressText = document.getElementById('progress-text')
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault()
 
         const formData = new FormData(form)
+        const fileInput = form.querySelector('input[type="file"]')
+        const file = fileInput.files[0]
 
-        const response = await fetch('/upload', {
-          method: 'POST',
-          body: formData,
-        })
-
-        const data = await response.json()
-
-        if (data.file_path) {
-          alert('File uploaded successfully and url copied to clipboard')
-          navigator.clipboard.writeText(window.location.origin + data.file_path)
-        } else {
-          alert('File upload failed')
+        if (!file) {
+          alert('Please select a file to upload.')
+          return
         }
+
+        uploadStatus.classList.remove('hidden')
+        progressBar.style.width = '0%'
+        progressText.textContent = 'Uploading...'
+
+        const xhr = new XMLHttpRequest()
+
+        xhr.open('POST', '/upload', true)
+
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentComplete = (event.loaded / event.total) * 100
+            progressBar.style.width = percentComplete.toFixed(2) + '%'
+            progressText.textContent = `Uploading: ${percentComplete.toFixed(2)}%`
+          }
+        }
+
+        xhr.onload = () => {
+          uploadStatus.classList.add('hidden')
+          if (xhr.status === 200) {
+            try {
+              const data = JSON.parse(xhr.responseText)
+              if (data.file_path) {
+                alert('File uploaded successfully and URL copied to clipboard')
+                navigator.clipboard.writeText(window.location.origin + data.file_path)
+                fetchFiles()
+              } else {
+                alert('File upload failed: ' + (data.error || 'Unknown error'))
+              }
+            } catch (e) {
+              console.error('Failed to parse JSON response:', e)
+              alert('File upload failed due to server response error.')
+            }
+          } else {
+            alert('File upload failed with status: ' + xhr.status)
+          }
+        }
+
+        xhr.onerror = () => {
+          uploadStatus.classList.add('hidden')
+          alert('File upload failed due to network error.')
+        }
+
+        xhr.send(formData)
       })
 
       function formatSize(size) {
-        const i = Math.floor(Math.log(size) / Math.log(1024))
+        const i = size === 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024))
         return parseFloat((size / Math.pow(1024, i)).toFixed(2)) + ' ' + ['B', 'KB', 'MB', 'GB'][i]
       }
       function formatDate(date) {
@@ -58,26 +152,43 @@
         }
 
         const data = await response.json()
-        const fileList = document.getElementById('files')
-        fileList.innerHTML = ''
-        // A file is an object with properties: id, name,size, storage_type, created_at
+        fileListContainer.innerHTML = ''
+
+        if (data.length === 0) {
+          fileListContainer.innerHTML = '<p class="text-center text-gray-600">No files uploaded yet.</p>'
+          return
+        }
+
         data
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
           .forEach((file) => {
-            const li = document.createElement('li')
-            li.className = 'mb-2'
-            li.innerHTML = `
-            <strong>${file.name}</strong> (${formatSize(file.size)})<br />
-            <small>Uploaded on ${formatDate(file.created_at)}</small><br />
-            <a href="/files/uploads/${file.id}" class="text-blue-500">Download</a>
-
-            <footer class="text-gray-500">
-              <span>Storage Type: ${file.storage_type}</span>
-              <span class="ml-4">ID: ${file.id}</span>
-            </footer>
+            const fileItem = document.createElement('div')
+            fileItem.className = 'file-item'
+            fileItem.innerHTML = `
+            <div class="file-info">
+              <div class="file-name">${file.name}</div>
+              <div class="file-meta">
+                <span>${formatSize(file.size)}</span> |
+                <span>Uploaded on ${formatDate(file.created_at)}</span>
+              </div>
+            </div>
+            <div class="file-actions">
+              <a href="/files/uploads/${file.id}" target="_blank" rel="noopener noreferrer">Download</a>
+              <a href="#" onclick="copyToClipboard('${window.location.origin}/files/uploads/${file.id}')">Copy Link</a>
+            </div>
           `
-            fileList.appendChild(li)
+            fileListContainer.appendChild(fileItem)
           })
+      }
+
+      async function copyToClipboard(text) {
+        try {
+          await navigator.clipboard.writeText(text)
+          alert('Link copied to clipboard!')
+        } catch (err) {
+          console.error('Failed to copy text: ', err)
+          alert('Failed to copy link.')
+        }
       }
 
       // Fetch files on page load
