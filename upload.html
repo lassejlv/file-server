@@ -453,9 +453,9 @@
 
       // --- Delete Functionality ---
       async function deleteFile(fileId, buttonElement) {
-          // if (!confirm('Are you sure you want to delete this file? This cannot be undone.')) {
-          //     return;
-          // }
+          if (!confirm('Are you sure you want to delete this file? This cannot be undone.')) {
+              return;
+          }
 
           buttonElement.disabled = true; // Disable button during delete
           buttonElement.textContent = 'Deleting...';
