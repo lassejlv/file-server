@@ -2,8 +2,8 @@ import { Hono } from 'hono'
 import { db } from '../db'
 import { eq } from 'drizzle-orm'
 import { files } from '../db/schema'
-import { LocalDriverGetFile } from '../drivers/local'
-import { S3DriverGetFile } from '../drivers/s3'
+import { LocalDriverDeleteFile, LocalDriverGetFile } from '../drivers/local'
+import { S3DriverDeleteFile, S3DriverGetFile } from '../drivers/s3'
 import { zValidator } from '@hono/zod-validator'
 import * as z from 'zod'
 
@@ -82,5 +82,31 @@ router.get(
     return c.json(filesData, 200)
   }
 )
+
+router.delete('/uploads/:id', async (c) => {
+  const id = c.req.param('id')
+  const file = await db.query.files.findFirst({ where: eq(files.id, id) })
+
+  if (!file) throw new Error('File not found')
+
+  if (file.is_private) return new Response(null, { status: 404 })
+
+  const file_path = file.path
+
+  switch (file.storage_type) {
+    case 'local':
+      await LocalDriverDeleteFile(file_path)
+      break
+    case 's3':
+      await S3DriverDeleteFile(file_path)
+      break
+    default:
+      throw new Error('Unknown storage type')
+  }
+
+  await db.delete(files).where(eq(files.id, id))
+
+  return c.json({ message: 'File deleted successfully' }, 200)
+})
 
 export default router

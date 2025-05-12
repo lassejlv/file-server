@@ -22,3 +22,13 @@ export const S3DriverGetFile = async (path: string): Promise<ArrayBuffer | null>
     return null
   }
 }
+
+export const S3DriverDeleteFile = async (path: string): Promise<boolean> => {
+  try {
+    await s3.file(path).delete()
+    return true
+  } catch (error) {
+    console.error(error)
+    return false
+  }
+}

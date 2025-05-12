@@ -25,3 +25,14 @@ export const LocalDriverGetFile = async (path: string): Promise<BunFile | null> 
     return null
   }
 }
+
+export const LocalDriverDeleteFile = async (path: string): Promise<boolean> => {
+  try {
+    const file = Bun.file(path)
+    await file.delete()
+    return true
+  } catch (error) {
+    console.error(error)
+    return false
+  }
+}
