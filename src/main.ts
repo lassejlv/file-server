@@ -28,6 +28,11 @@ if (!DISABLE_UPLOAD_PAGE) {
     const html = await Bun.file("upload.html").text();
     return c.html(html);
   });
+
+  app.get("/style.build.css", async (c) => {
+    const css = await Bun.file("style.build.css").text();
+    return c.html(css);
+  });
 }
 
 app.route("/upload", UploadRouter);

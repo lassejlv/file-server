@@ -4,14 +4,15 @@
   "type": "module",
   "scripts": {
     "dev": "bun --watch .",
-    "start": "bun db:push && ./server",
+    "start": "bun run --silent db:push && ./server",
     "build": "bun build --compile --minify . --outfile server",
     "db:generate": "bunx --bun drizzle-kit generate",
     "db:push": "bunx --bun drizzle-kit push"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "drizzle-kit": "^0.30.6"
+    "drizzle-kit": "^0.30.6",
+    "tailwindcss": "^4.1.6"
   },
   "peerDependencies": {
     "typescript": "^5.8.2"

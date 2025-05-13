@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@layer base {
+    body {
+        @apply font-sans bg-gray-100 text-gray-800;
+    }
+    h1,
+    h2 {
+        @apply text-center mb-6;
+    }
+    h1 {
+        @apply text-4xl font-extrabold text-blue-700;
+    }
+    h2 {
+        @apply text-2xl font-bold text-gray-700;
+    }
+    input[type="file"] {
+        @apply block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer;
+    }
+    button {
+        @apply transition-colors duration-200;
+    }
+    button[type="submit"] {
+        @apply bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center;
+    }
+    .secondary-button {
+        @apply bg-gray-300 text-gray-700 font-semibold py-2 px-6 rounded-full hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center;
+    }
+    .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #fff;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        animation: spin 1s linear infinite;
+        margin-right: 8px; /* Space between spinner and text */
+    }
+    .spinner-gray {
+        border: 4px solid rgba(156, 163, 175, 0.3); /* gray-400 with alpha */
+        border-top: 4px solid #6b7280; /* gray-500 */
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    .file-item {
+        @apply bg-white p-4 rounded-lg shadow-md flex flex-col md:flex-row justify-between items-start md:items-center mb-4 transition-transform duration-200 hover:scale-[1.01];
+    }
+    .file-info {
+        @apply flex-grow mr-4;
+    }
+    .file-name {
+        @apply text-lg font-semibold text-blue-800 truncate;
+    }
+    .file-meta {
+        @apply text-sm text-gray-500;
+    }
+    .file-actions {
+        @apply flex flex-col md:flex-row items-start md:items-center mt-2 md:mt-0;
+    }
+    .file-actions a {
+        @apply text-blue-500 hover:underline mr-4 last:mr-0;
+    }
+    .file-actions button {
+        @apply text-red-500 hover:underline ml-4 last:mr-0 bg-transparent border-none cursor-pointer p-0;
+    }
+    .upload-progress-container {
+        @apply w-full bg-gray-200 rounded-full h-2 overflow-hidden;
+    }
+    .upload-progress-bar {
+        @apply bg-green-500 h-2 rounded-full transition-all duration-300 ease-in-out;
+    }
+
+    /* Toast Container */
+    #toast-container {
+        @apply fixed top-6 right-6 z-50 flex flex-col space-y-4;
+    }
+
+    /* Toast Styles */
+    .toast {
+        @apply flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 transition-opacity duration-300 ease-out;
+    }
+    .toast.success {
+        @apply text-green-500 dark:text-green-400;
+    }
+    .toast.error {
+        @apply text-red-500 dark:text-red-400;
+    }
+    .toast.info {
+        @apply text-blue-500 dark:text-blue-400;
+    }
+    .toast-icon {
+        @apply inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg;
+    }
+    .toast-icon.success {
+        @apply bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200;
+    }
+    .toast-icon.error {
+        @apply bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200;
+    }
+    .toast-icon.info {
+        @apply bg-blue-100 text-blue-500 dark:bg-blue-800 dark:text-blue-200;
+    }
+    .toast-message {
+        @apply ml-3 text-sm font-normal flex-grow;
+    }
+    .toast-close-button {
+        @apply ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700;
+    }
+
+    /* Search Input Styling */
+    #search-input {
+        @apply block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mb-4;
+    }
+}
