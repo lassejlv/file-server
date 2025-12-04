@@ -995,21 +995,32 @@
   <body class="container mx-auto py-12 px-4">
     <h1>File Server</h1>
 
-    <form id="upload-form" class="flex flex-col items-center justify-center bg-white p-8 rounded-lg shadow-lg mb-8">
-      <label for="file-upload" class="w-full">
-          <input type="file" name="file" id="file-upload" class="mb-4" multiple required/>
-      </label>
-
-      <div id="upload-queue" class="w-full mb-4 hidden">
-          <h3 class="text-lg font-semibold mb-2">Upload Queue:</h3>
-          <ul id="upload-items" class="text-sm text-gray-700 space-y-1">
-          </ul>
-          <button type="button" id="clear-queue-button" class="secondary-button mt-4 text-sm">Clear Queue</button>
+    <form id="upload-form" class="flex flex-col items-center justify-center bg-white p-8 rounded-lg shadow-lg mb-8 border-2 border-dashed border-gray-300 transition-colors duration-200" ondragover="this.classList.add('border-blue-500', 'bg-blue-50'); event.preventDefault();" ondragleave="this.classList.remove('border-blue-500', 'bg-blue-50');" ondrop="this.classList.remove('border-blue-500', 'bg-blue-50'); event.preventDefault(); handleDrop(event)">
+      <div class="text-center mb-6 pointer-events-none">
+        <svg class="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+        <p class="text-gray-600 text-lg font-medium">Drag and drop files here</p>
+        <p class="text-gray-400 text-sm">or click to browse</p>
       </div>
 
-      <button type="submit" id="upload-button">
-          <span id="button-text">Upload Files</span>
-          <div id="button-spinner" class="spinner hidden"></div>
+      <label for="file-upload" class="w-full max-w-xs">
+          <input type="file" name="file" id="file-upload" class="hidden" multiple required onchange="handleFiles(this.files)"/>
+          <div class="cursor-pointer bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700 transition-colors duration-200 text-center shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+            Select Files
+          </div>
+      </label>
+
+      <div id="upload-queue" class="w-full mt-8 hidden">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-700">Upload Queue</h3>
+            <button type="button" id="clear-queue-button" class="text-sm text-red-500 hover:text-red-700 font-medium">Clear All</button>
+          </div>
+          <ul id="upload-items" class="bg-gray-50 rounded-lg border border-gray-200 divide-y divide-gray-200 max-h-60 overflow-y-auto">
+          </ul>
+      </div>
+
+      <button type="submit" id="upload-button" class="mt-6 w-full max-w-xs bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transform hover:-translate-y-0.5">
+          <span id="button-text">Start Upload</span>
+          <div id="button-spinner" class="spinner hidden ml-2"></div>
       </button>
     </form>
 
@@ -1094,6 +1105,33 @@
 
       // --- File Handling and Upload ---
 
+      const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB chunks
+      const MAX_RETRIES = 3;
+
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+      }
+
+      function handleFiles(files) {
+        if (files.length > 0) {
+            uploadQueue.classList.remove('hidden');
+            uploadButton.disabled = false;
+            // clearQueueButton.disabled = false; // logic moved
+
+            // Don't clear existing if adding more? For now, append
+            // uploadItemsList.innerHTML = ''; 
+            
+            Array.from(files).forEach(file => {
+                addFileToQueue(file);
+            });
+            
+            // Update input files if possible (for form submission fallback)
+            // fileInput.files = files; // Note: DataTransfer can help here but complex for appending
+        }
+      }
+
       function formatSize(size) {
         const i = size === 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024))
         return parseFloat((size / Math.pow(1024, i)).toFixed(2)) + ' ' + ['B', 'KB', 'MB', 'GB'][i]
@@ -1102,7 +1140,118 @@
         return new Date(date).toLocaleString()
       }
 
+      async function uploadChunk(uploadId, chunkIndex, chunk, retries = 0) {
+        const formData = new FormData();
+        formData.append('uploadId', uploadId);
+        formData.append('chunkIndex', chunkIndex.toString());
+        formData.append('chunk', chunk);
+
+        try {
+          const response = await fetch('/upload/chunk', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+            throw new Error(errorData.error || `Chunk upload failed with status ${response.status}`);
+          }
+
+          return await response.json();
+        } catch (error) {
+          if (retries < MAX_RETRIES) {
+            console.log(`Retrying chunk ${chunkIndex}, attempt ${retries + 1}/${MAX_RETRIES}`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * (retries + 1))); // Exponential backoff
+            return uploadChunk(uploadId, chunkIndex, chunk, retries + 1);
+          }
+          throw error;
+        }
+      }
+
+      async function uploadFileChunked(file, listItem) {
+        const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+
+        // Step 1: Initialize chunked upload
+        updateUploadStatus(listItem, 'Initializing...', 'text-blue-600');
+
+        const initResponse = await fetch('/upload/init', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fileName: file.name,
+            fileType: file.type || 'application/octet-stream',
+            totalChunks,
+            totalSize: file.size,
+          }),
+        });
+
+        if (!initResponse.ok) {
+          const errorData = await initResponse.json().catch(() => ({ error: 'Unknown error' }));
+          throw new Error(errorData.error || 'Failed to initialize upload');
+        }
+
+        const { uploadId } = await initResponse.json();
+
+        // Step 2: Upload chunks
+        updateUploadStatus(listItem, `Uploading 0/${totalChunks}`, 'text-blue-600');
+
+        for (let i = 0; i < totalChunks; i++) {
+          const start = i * CHUNK_SIZE;
+          const end = Math.min(start + CHUNK_SIZE, file.size);
+          const chunk = file.slice(start, end);
+
+          try {
+            await uploadChunk(uploadId, i, chunk);
+          } catch (error) {
+            // Abort upload on failure
+            await fetch('/upload/abort', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ uploadId }),
+            }).catch(() => {});
+            throw error;
+          }
+
+          const progress = ((i + 1) / totalChunks) * 100;
+          updateUploadProgress(listItem, progress);
+          updateUploadStatus(listItem, `Uploading ${i + 1}/${totalChunks}`, 'text-blue-600');
+        }
+
+        // Step 3: Complete upload
+        updateUploadStatus(listItem, 'Finalizing...', 'text-blue-600');
+
+        const completeResponse = await fetch('/upload/complete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ uploadId }),
+        });
+
+        if (!completeResponse.ok) {
+          const errorData = await completeResponse.json().catch(() => ({ error: 'Unknown error' }));
+          throw new Error(errorData.error || 'Failed to complete upload');
+        }
+
+        return await completeResponse.json();
+      }
+
       async function uploadFile(file, listItem) {
+        // Use chunked upload for files larger than chunk size, or regular upload for smaller files
+        const useChunkedUpload = file.size > CHUNK_SIZE;
+
+        if (useChunkedUpload) {
+          try {
+            const data = await uploadFileChunked(file, listItem);
+            updateUploadStatus(listItem, 'Success', 'text-green-600');
+            showToast(`${file.name} uploaded successfully!`, 'success');
+            return data;
+          } catch (error) {
+            updateUploadStatus(listItem, 'Failed', 'text-red-600');
+            showToast(`${file.name} upload failed: ${error.message}`, 'error');
+            throw error;
+          }
+        }
+
+        // Regular upload for small files
         return new Promise((resolve, reject) => {
             const formData = new FormData();
             formData.append('file', file);
@@ -1160,24 +1309,56 @@
 
       function addFileToQueue(file) {
           const listItem = document.createElement('li');
-          listItem.className = 'flex items-center justify-between';
+          listItem.className = 'p-4 flex items-center justify-between hover:bg-gray-100 transition-colors duration-150';
+          
+          // Determine icon based on file type
+          let icon = '<svg style="width: 32px; height: 32px; margin-right: 12px;" class="text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>';
+          if (file.type.startsWith('image/')) {
+            icon = '<svg style="width: 32px; height: 32px; margin-right: 12px;" class="text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
+          } else if (file.type.startsWith('video/')) {
+             icon = '<svg style="width: 32px; height: 32px; margin-right: 12px;" class="text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>';
+          }
+
           listItem.innerHTML = `
-              <span>${file.name} (${formatSize(file.size)})</span>
-              <div class="flex items-center">
-                  <span class="status mr-2 text-gray-600 text-xs">Pending</span>
-                  <div class="upload-progress-container w-20 h-2 bg-gray-300 rounded hidden">
-                      <div class="upload-progress-bar h-2 bg-green-500 rounded" style="width: 0%;"></div>
+              <div class="flex items-center flex-grow min-w-0">
+                  ${icon}
+                  <div class="flex-col min-w-0 overflow-hidden">
+                      <div class="text-sm font-medium text-gray-900 truncate" title="${file.name}">${file.name}</div>
+                      <div class="text-xs text-gray-500">${formatSize(file.size)}</div>
                   </div>
               </div>
+              <div class="flex items-center ml-4 flex-shrink-0">
+                  <div class="flex flex-col items-end mr-4 w-32">
+                      <span class="status text-xs font-semibold text-gray-500 mb-1">Pending</span>
+                      <div class="upload-progress-container w-full h-1.5 bg-gray-200 rounded-full overflow-hidden hidden">
+                          <div class="upload-progress-bar h-full bg-blue-500 rounded-full" style="width: 0%;"></div>
+                      </div>
+                  </div>
+                  <button type="button" class="text-gray-400 hover:text-red-500 transition-colors focus:outline-none" onclick="this.closest('li').remove(); checkQueueEmpty();">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                  </button>
+              </div>
           `;
+          
+          // Store file object on the element for later retrieval during upload loop
+          listItem.fileObject = file;
+          
           uploadItemsList.appendChild(listItem);
           return listItem;
+      }
+
+      function checkQueueEmpty() {
+        if (uploadItemsList.children.length === 0) {
+            uploadQueue.classList.add('hidden');
+            uploadButton.disabled = true;
+        }
       }
 
       function updateUploadStatus(listItem, statusText, statusClass) {
           const statusSpan = listItem.querySelector('.status');
           statusSpan.textContent = statusText;
-          statusSpan.className = `status mr-2 text-xs ${statusClass}`;
+          // statusSpan.className = `status mr-2 text-xs ${statusClass}`; // Keeping existing classes + new color
+          statusSpan.className = `status text-xs font-semibold mb-1 ${statusClass}`;
       }
 
       function updateUploadProgress(listItem, percent) {
@@ -1201,10 +1382,22 @@
           clearQueueButton.disabled = true;
 
           uploadQueue.classList.remove('hidden');
-          uploadItemsList.innerHTML = '';
+          // uploadItemsList.innerHTML = ''; // Don't clear, append
 
-          for (const file of files) {
-              const listItem = addFileToQueue(file);
+          // Get files from list items instead of input directly
+          const listItems = Array.from(uploadItemsList.children);
+          
+          for (const listItem of listItems) {
+              const file = listItem.fileObject;
+              if (!file) continue; // Should have file attached
+              
+              // Skip if already uploaded or uploading
+              if (listItem.querySelector('.status').textContent === 'Success') continue;
+
+              // Disable delete button during upload
+              const deleteBtn = listItem.querySelector('button');
+              if(deleteBtn) deleteBtn.remove();
+
               try {
                   await uploadFile(file, listItem);
               } catch (error) {
@@ -1224,8 +1417,8 @@
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const files = fileInput.files;
-        if (files.length > 0) {
+        const files = fileInput.files; // We might want to look at queue items instead
+        if (uploadItemsList.children.length > 0) {
             processUploadQueue(files);
         } else {
              showToast('Please select files to upload.', 'info');
@@ -1261,20 +1454,37 @@
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
           .forEach((file) => {
             const fileItem = document.createElement('div')
-            fileItem.className = 'file-item'
+            fileItem.className = 'file-item hover:shadow-md transition-shadow duration-200 border border-gray-100'
+            
+            let icon = '<svg style="width: 40px; height: 40px; margin-right: 16px;" class="text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>';
+            if (file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+               icon = '<svg style="width: 40px; height: 40px; margin-right: 16px;" class="text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
+            } else if (file.name.match(/\.(mp4|webm|ogg|mov)$/i)) {
+               icon = '<svg style="width: 40px; height: 40px; margin-right: 16px;" class="text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>';
+            }
+
             fileItem.innerHTML = `
-            <div class="file-info">
-              <div class="file-name" title="${file.name}">${file.name}</div>
-              <div class="file-meta">
-                <span>${formatSize(file.size)}</span> |
-                <span>Uploaded on ${formatDate(file.created_at)}</span> |
-                <span>Storage: ${file.storage_type}</span>
+            <div class="file-info flex items-center">
+              ${icon}
+              <div class="overflow-hidden">
+                  <div class="file-name text-lg font-medium text-gray-800 truncate" title="${file.name}">${file.name}</div>
+                  <div class="file-meta text-sm text-gray-500 mt-1 flex flex-wrap gap-x-3">
+                    <span class="flex items-center"><svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg> ${formatSize(file.size)}</span>
+                    <span class="flex items-center"><svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> ${formatDate(file.created_at)}</span>
+                    <span class="flex items-center px-2 py-0.5 rounded-full bg-gray-100 text-xs font-medium uppercase tracking-wide text-gray-600 border border-gray-200">${file.storage_type}</span>
+                  </div>
               </div>
             </div>
-            <div class="file-actions">
-              <a href="/files/uploads/${file.id}" target="_blank" rel="noopener noreferrer">Download</a>
-              <a href="#" onclick="event.preventDefault(); copyToClipboard('${window.location.origin}/files/uploads/${file.id}')">Copy Link</a>
-              <button onclick="event.preventDefault(); deleteFile('${file.id}', this)">Delete</button>
+            <div class="file-actions flex items-center space-x-3 mt-4 md:mt-0">
+              <a href="/files/uploads/${file.id}" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-blue-600 transition-colors p-2 rounded-full hover:bg-blue-50" title="Download">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              </a>
+              <a href="#" onclick="event.preventDefault(); copyToClipboard('${window.location.origin}/files/uploads/${file.id}')" class="text-gray-500 hover:text-purple-600 transition-colors p-2 rounded-full hover:bg-purple-50" title="Copy Link">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+              </a>
+              <button onclick="event.preventDefault(); deleteFile('${file.id}', this)" class="text-gray-500 hover:text-red-600 transition-colors p-2 rounded-full hover:bg-red-50" title="Delete">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+              </button>
             </div>
           `
             fileListContainer.appendChild(fileItem)
