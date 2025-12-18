@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>File Server</title>
-    <style>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File Server</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
     /*! tailwindcss v4.1.6 | MIT License | https://tailwindcss.com */
     @layer properties;
     @layer theme, base, components, utilities;
+
     @layer theme {
-      :root, :host {
+
+      :root,
+      :host {
         --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
           "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
@@ -69,15 +74,38 @@
         --default-font-family: var(--font-sans);
         --default-mono-font-family: var(--font-mono);
       }
+      
+      :root.dark {
+        --color-gray-100: oklch(15% 0.01 264.542); /* Darker Background */
+        --color-gray-200: oklch(25% 0.01 264.531); /* Darker borders/secondary */
+        --color-gray-300: oklch(35% 0.01 258.338);
+        --color-gray-400: oklch(50% 0.01 261.325);
+        --color-gray-500: oklch(60% 0.01 264.364);
+        --color-gray-600: oklch(75% 0.01 256.802);
+        --color-gray-700: oklch(85% 0.01 259.733);
+        --color-gray-800: oklch(92% 0.01 256.848); /* Text - now light */
+        --color-gray-900: oklch(98% 0.01 264.665);
+        --color-white: oklch(20% 0.01 264.542); /* Card background - dark */
+        --color-blue-50: oklch(25% 0.05 254.604);
+        --color-blue-100: oklch(30% 0.05 255.585);
+      }
     }
+
     @layer base {
-      *, ::after, ::before, ::backdrop, ::file-selector-button {
+
+      *,
+      ::after,
+      ::before,
+      ::backdrop,
+      ::file-selector-button {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
         border: 0 solid;
       }
-      html, :host {
+
+      html,
+      :host {
         line-height: 1.5;
         -webkit-text-size-adjust: 100%;
         tab-size: 4;
@@ -86,74 +114,117 @@
         font-variation-settings: var(--default-font-variation-settings, normal);
         -webkit-tap-highlight-color: transparent;
       }
+
       hr {
         height: 0;
         color: inherit;
         border-top-width: 1px;
       }
+
       abbr:where([title]) {
         -webkit-text-decoration: underline dotted;
         text-decoration: underline dotted;
       }
-      h1, h2, h3, h4, h5, h6 {
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
         font-size: inherit;
         font-weight: inherit;
       }
+
       a {
         color: inherit;
         -webkit-text-decoration: inherit;
         text-decoration: inherit;
       }
-      b, strong {
+
+      b,
+      strong {
         font-weight: bolder;
       }
-      code, kbd, samp, pre {
+
+      code,
+      kbd,
+      samp,
+      pre {
         font-family: var(--default-mono-font-family, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
         font-feature-settings: var(--default-mono-font-feature-settings, normal);
         font-variation-settings: var(--default-mono-font-variation-settings, normal);
         font-size: 1em;
       }
+
       small {
         font-size: 80%;
       }
-      sub, sup {
+
+      sub,
+      sup {
         font-size: 75%;
         line-height: 0;
         position: relative;
         vertical-align: baseline;
       }
+
       sub {
         bottom: -0.25em;
       }
+
       sup {
         top: -0.5em;
       }
+
       table {
         text-indent: 0;
         border-color: inherit;
         border-collapse: collapse;
       }
+
       :-moz-focusring {
         outline: auto;
       }
+
       progress {
         vertical-align: baseline;
       }
+
       summary {
         display: list-item;
       }
-      ol, ul, menu {
+
+      ol,
+      ul,
+      menu {
         list-style: none;
       }
-      img, svg, video, canvas, audio, iframe, embed, object {
+
+      img,
+      svg,
+      video,
+      canvas,
+      audio,
+      iframe,
+      embed,
+      object {
         display: block;
         vertical-align: middle;
       }
-      img, video {
+
+      img,
+      video {
         max-width: 100%;
         height: auto;
       }
-      button, input, select, optgroup, textarea, ::file-selector-button {
+
+      button,
+      input,
+      select,
+      optgroup,
+      textarea,
+      ::file-selector-button {
         font: inherit;
         font-feature-settings: inherit;
         font-variation-settings: inherit;
@@ -163,62 +234,91 @@
         background-color: transparent;
         opacity: 1;
       }
+
       :where(select:is([multiple], [size])) optgroup {
         font-weight: bolder;
       }
+
       :where(select:is([multiple], [size])) optgroup option {
         padding-inline-start: 20px;
       }
+
       ::file-selector-button {
         margin-inline-end: 4px;
       }
+
       ::placeholder {
         opacity: 1;
       }
-      @supports (not (-webkit-appearance: -apple-pay-button))  or (contain-intrinsic-size: 1px) {
+
+      @supports (not (-webkit-appearance: -apple-pay-button)) or (contain-intrinsic-size: 1px) {
         ::placeholder {
           color: currentcolor;
+
           @supports (color: color-mix(in lab, red, red)) {
             color: color-mix(in oklab, currentcolor 50%, transparent);
           }
         }
       }
+
       textarea {
         resize: vertical;
       }
+
       ::-webkit-search-decoration {
         -webkit-appearance: none;
       }
+
       ::-webkit-date-and-time-value {
         min-height: 1lh;
         text-align: inherit;
       }
+
       ::-webkit-datetime-edit {
         display: inline-flex;
       }
+
       ::-webkit-datetime-edit-fields-wrapper {
         padding: 0;
       }
-      ::-webkit-datetime-edit, ::-webkit-datetime-edit-year-field, ::-webkit-datetime-edit-month-field, ::-webkit-datetime-edit-day-field, ::-webkit-datetime-edit-hour-field, ::-webkit-datetime-edit-minute-field, ::-webkit-datetime-edit-second-field, ::-webkit-datetime-edit-millisecond-field, ::-webkit-datetime-edit-meridiem-field {
+
+      ::-webkit-datetime-edit,
+      ::-webkit-datetime-edit-year-field,
+      ::-webkit-datetime-edit-month-field,
+      ::-webkit-datetime-edit-day-field,
+      ::-webkit-datetime-edit-hour-field,
+      ::-webkit-datetime-edit-minute-field,
+      ::-webkit-datetime-edit-second-field,
+      ::-webkit-datetime-edit-millisecond-field,
+      ::-webkit-datetime-edit-meridiem-field {
         padding-block: 0;
       }
+
       :-moz-ui-invalid {
         box-shadow: none;
       }
-      button, input:where([type="button"], [type="reset"], [type="submit"]), ::file-selector-button {
+
+      button,
+      input:where([type="button"], [type="reset"], [type="submit"]),
+      ::file-selector-button {
         appearance: button;
       }
-      ::-webkit-inner-spin-button, ::-webkit-outer-spin-button {
+
+      ::-webkit-inner-spin-button,
+      ::-webkit-outer-spin-button {
         height: auto;
       }
+
       [hidden]:where(:not([hidden="until-found"])) {
         display: none !important;
       }
     }
+
     @layer utilities {
       .visible {
         visibility: visible;
       }
+
       .sr-only {
         position: absolute;
         width: 1px;
@@ -230,95 +330,125 @@
         white-space: nowrap;
         border-width: 0;
       }
+
       .container {
         width: 100%;
-        @media (width >= 40rem) {
+
+        @media (width >=40rem) {
           max-width: 40rem;
         }
-        @media (width >= 48rem) {
+
+        @media (width >=48rem) {
           max-width: 48rem;
         }
-        @media (width >= 64rem) {
+
+        @media (width >=64rem) {
           max-width: 64rem;
         }
-        @media (width >= 80rem) {
+
+        @media (width >=80rem) {
           max-width: 80rem;
         }
-        @media (width >= 96rem) {
+
+        @media (width >=96rem) {
           max-width: 96rem;
         }
       }
+
       .mx-auto {
         margin-inline: auto;
       }
+
       .mt-4 {
         margin-top: calc(var(--spacing) * 4);
       }
+
       .mr-2 {
         margin-right: calc(var(--spacing) * 2);
       }
+
       .mb-2 {
         margin-bottom: calc(var(--spacing) * 2);
       }
+
       .mb-4 {
         margin-bottom: calc(var(--spacing) * 4);
       }
+
       .mb-6 {
         margin-bottom: calc(var(--spacing) * 6);
       }
+
       .mb-8 {
         margin-bottom: calc(var(--spacing) * 8);
       }
+
       .flex {
         display: flex;
       }
+
       .hidden {
         display: none;
       }
+
       .h-2 {
         height: calc(var(--spacing) * 2);
       }
+
       .h-3 {
         height: calc(var(--spacing) * 3);
       }
+
       .h-5 {
         height: calc(var(--spacing) * 5);
       }
+
       .w-3 {
         width: calc(var(--spacing) * 3);
       }
+
       .w-5 {
         width: calc(var(--spacing) * 5);
       }
+
       .w-20 {
         width: calc(var(--spacing) * 20);
       }
+
       .w-full {
         width: 100%;
       }
+
       .translate-x-0 {
         --tw-translate-x: calc(var(--spacing) * 0);
         translate: var(--tw-translate-x) var(--tw-translate-y);
       }
+
       .translate-x-full {
         --tw-translate-x: 100%;
         translate: var(--tw-translate-x) var(--tw-translate-y);
       }
+
       .transform {
-        transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
+        transform: var(--tw-rotate-x, ) var(--tw-rotate-y, ) var(--tw-rotate-z, ) var(--tw-skew-x, ) var(--tw-skew-y, );
       }
+
       .flex-col {
         flex-direction: column;
       }
+
       .items-center {
         align-items: center;
       }
+
       .justify-between {
         justify-content: space-between;
       }
+
       .justify-center {
         justify-content: center;
       }
+
       .space-y-1 {
         :where(& > :not(:last-child)) {
           --tw-space-y-reverse: 0;
@@ -326,85 +456,112 @@
           margin-block-end: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-y-reverse)));
         }
       }
+
       .rounded {
         border-radius: 0.25rem;
       }
+
       .rounded-lg {
         border-radius: var(--radius-lg);
       }
+
       .bg-gray-300 {
         background-color: var(--color-gray-300);
       }
+
       .bg-green-500 {
         background-color: var(--color-green-500);
       }
+
       .bg-white {
         background-color: var(--color-white);
       }
+
       .p-8 {
         padding: calc(var(--spacing) * 8);
       }
+
       .px-4 {
         padding-inline: calc(var(--spacing) * 4);
       }
+
       .py-12 {
         padding-block: calc(var(--spacing) * 12);
       }
+
       .text-center {
         text-align: center;
       }
+
       .text-lg {
         font-size: var(--text-lg);
         line-height: var(--tw-leading, var(--text-lg--line-height));
       }
+
       .text-sm {
         font-size: var(--text-sm);
         line-height: var(--tw-leading, var(--text-sm--line-height));
       }
+
       .text-xs {
         font-size: var(--text-xs);
         line-height: var(--tw-leading, var(--text-xs--line-height));
       }
+
       .font-semibold {
         --tw-font-weight: var(--font-weight-semibold);
         font-weight: var(--font-weight-semibold);
       }
+
       .text-blue-600 {
         color: var(--color-blue-600);
       }
+
       .text-gray-600 {
         color: var(--color-gray-600);
       }
+
       .text-gray-700 {
         color: var(--color-gray-700);
       }
+
       .text-green-600 {
         color: var(--color-green-600);
       }
+
       .text-red-600 {
         color: var(--color-red-600);
       }
+
       .opacity-0 {
         opacity: 0%;
       }
+
       .opacity-100 {
         opacity: 100%;
       }
+
       .shadow-lg {
         --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
         box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
       }
     }
+
     @layer base {
       body {
         background-color: var(--color-gray-100);
         font-family: var(--font-sans);
         color: var(--color-gray-800);
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
-      h1, h2 {
+
+      h1,
+      h2 {
         margin-bottom: calc(var(--spacing) * 6);
         text-align: center;
+        transition: color 0.3s ease;
       }
+
       h1 {
         font-size: var(--text-4xl);
         line-height: var(--tw-leading, var(--text-4xl--line-height));
@@ -412,6 +569,7 @@
         font-weight: var(--font-weight-extrabold);
         color: var(--color-blue-700);
       }
+
       h2 {
         font-size: var(--text-2xl);
         line-height: var(--tw-leading, var(--text-2xl--line-height));
@@ -419,6 +577,7 @@
         font-weight: var(--font-weight-bold);
         color: var(--color-gray-700);
       }
+
       input[type="file"] {
         display: block;
         width: 100%;
@@ -426,36 +585,46 @@
         font-size: var(--text-sm);
         line-height: var(--tw-leading, var(--text-sm--line-height));
         color: var(--color-gray-500);
+
         &::file-selector-button {
           margin-right: calc(var(--spacing) * 4);
         }
+
         &::file-selector-button {
           border-radius: calc(infinity * 1px);
         }
+
         &::file-selector-button {
           border-style: var(--tw-border-style);
           border-width: 0px;
         }
+
         &::file-selector-button {
           background-color: var(--color-blue-50);
         }
+
         &::file-selector-button {
           padding-inline: calc(var(--spacing) * 4);
         }
+
         &::file-selector-button {
           padding-block: calc(var(--spacing) * 2);
         }
+
         &::file-selector-button {
           font-size: var(--text-sm);
           line-height: var(--tw-leading, var(--text-sm--line-height));
         }
+
         &::file-selector-button {
           --tw-font-weight: var(--font-weight-semibold);
           font-weight: var(--font-weight-semibold);
         }
+
         &::file-selector-button {
           color: var(--color-blue-700);
         }
+
         &:hover {
           @media (hover: hover) {
             &::file-selector-button {
@@ -464,6 +633,7 @@
           }
         }
       }
+
       button {
         transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
         transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -471,6 +641,7 @@
         --tw-duration: 200ms;
         transition-duration: 200ms;
       }
+
       button[type="submit"] {
         display: flex;
         align-items: center;
@@ -482,18 +653,22 @@
         --tw-font-weight: var(--font-weight-semibold);
         font-weight: var(--font-weight-semibold);
         color: var(--color-white);
+
         &:hover {
           @media (hover: hover) {
             background-color: var(--color-blue-700);
           }
         }
+
         &:disabled {
           cursor: not-allowed;
         }
+
         &:disabled {
           opacity: 50%;
         }
       }
+
       .secondary-button {
         display: flex;
         align-items: center;
@@ -505,18 +680,22 @@
         --tw-font-weight: var(--font-weight-semibold);
         font-weight: var(--font-weight-semibold);
         color: var(--color-gray-700);
+
         &:hover {
           @media (hover: hover) {
             background-color: var(--color-gray-400);
           }
         }
+
         &:disabled {
           cursor: not-allowed;
         }
+
         &:disabled {
           opacity: 50%;
         }
       }
+
       .spinner {
         border: 4px solid rgba(255, 255, 255, 0.3);
         border-top: 4px solid #fff;
@@ -526,18 +705,22 @@
         animation: spin 1s linear infinite;
         margin-right: 8px;
       }
+
       .spinner-gray {
         border: 4px solid rgba(156, 163, 175, 0.3);
         border-top: 4px solid #6b7280;
       }
+
       @keyframes spin {
         0% {
           transform: rotate(0deg);
         }
+
         100% {
           transform: rotate(360deg);
         }
       }
+
       .file-item {
         margin-bottom: calc(var(--spacing) * 4);
         display: flex;
@@ -554,22 +737,27 @@
         transition-duration: var(--tw-duration, var(--default-transition-duration));
         --tw-duration: 200ms;
         transition-duration: 200ms;
+
         &:hover {
           @media (hover: hover) {
             scale: 1.01;
           }
         }
-        @media (width >= 48rem) {
+
+        @media (width >=48rem) {
           flex-direction: row;
         }
-        @media (width >= 48rem) {
+
+        @media (width >=48rem) {
           align-items: center;
         }
       }
+
       .file-info {
         margin-right: calc(var(--spacing) * 4);
         flex-grow: 1;
       }
+
       .file-name {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -580,38 +768,47 @@
         font-weight: var(--font-weight-semibold);
         color: var(--color-blue-800);
       }
+
       .file-meta {
         font-size: var(--text-sm);
         line-height: var(--tw-leading, var(--text-sm--line-height));
         color: var(--color-gray-500);
       }
+
       .file-actions {
         margin-top: calc(var(--spacing) * 2);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        @media (width >= 48rem) {
+
+        @media (width >=48rem) {
           margin-top: calc(var(--spacing) * 0);
         }
-        @media (width >= 48rem) {
+
+        @media (width >=48rem) {
           flex-direction: row;
         }
-        @media (width >= 48rem) {
+
+        @media (width >=48rem) {
           align-items: center;
         }
       }
+
       .file-actions a {
         margin-right: calc(var(--spacing) * 4);
         color: var(--color-blue-500);
+
         &:last-child {
           margin-right: calc(var(--spacing) * 0);
         }
+
         &:hover {
           @media (hover: hover) {
             text-decoration-line: underline;
           }
         }
       }
+
       .file-actions button {
         margin-left: calc(var(--spacing) * 4);
         cursor: pointer;
@@ -620,15 +817,18 @@
         background-color: transparent;
         padding: calc(var(--spacing) * 0);
         color: var(--color-red-500);
+
         &:last-child {
           margin-right: calc(var(--spacing) * 0);
         }
+
         &:hover {
           @media (hover: hover) {
             text-decoration-line: underline;
           }
         }
       }
+
       .upload-progress-container {
         height: calc(var(--spacing) * 2);
         width: 100%;
@@ -636,6 +836,7 @@
         border-radius: calc(infinity * 1px);
         background-color: var(--color-gray-200);
       }
+
       .upload-progress-bar {
         height: calc(var(--spacing) * 2);
         border-radius: calc(infinity * 1px);
@@ -648,160 +849,123 @@
         --tw-ease: var(--ease-in-out);
         transition-timing-function: var(--ease-in-out);
       }
+
+      /* Toast Container */
       #toast-container {
         position: fixed;
-        top: calc(var(--spacing) * 6);
-        right: calc(var(--spacing) * 6);
-        z-index: 50;
+        top: 1.5rem;
+        right: 1.5rem;
+        z-index: 9999;
         display: flex;
         flex-direction: column;
-        :where(& > :not(:last-child)) {
-          --tw-space-y-reverse: 0;
-          margin-block-start: calc(calc(var(--spacing) * 4) * var(--tw-space-y-reverse));
-          margin-block-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)));
-        }
+        gap: 1rem;
+        pointer-events: none;
       }
+
+      /* Toast Item */
       .toast {
+        pointer-events: auto;
         display: flex;
-        width: 100%;
-        max-width: var(--container-xs);
-        align-items: center;
-        border-radius: var(--radius-lg);
+        align-items: flex-start;
+        width: 24rem;
+        max-width: 90vw;
+        padding: 1rem;
         background-color: var(--color-white);
-        padding: calc(var(--spacing) * 4);
-        color: var(--color-gray-500);
-        --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
-        box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-        transition-property: opacity;
-        transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-        transition-duration: var(--tw-duration, var(--default-transition-duration));
-        --tw-duration: 300ms;
-        transition-duration: 300ms;
-        --tw-ease: var(--ease-out);
-        transition-timing-function: var(--ease-out);
-        @media (prefers-color-scheme: dark) {
-          background-color: var(--color-gray-800);
-        }
-        @media (prefers-color-scheme: dark) {
-          color: var(--color-gray-400);
-        }
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        color: var(--color-gray-800);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transform: translateX(120%);
+        opacity: 0;
+        border-left: 4px solid transparent;
       }
-      .toast.success {
-        color: var(--color-green-500);
-        @media (prefers-color-scheme: dark) {
-          color: var(--color-green-400);
-        }
+
+      .toast.visible {
+        transform: translateX(0);
+        opacity: 1;
       }
-      .toast.error {
-        color: var(--color-red-500);
-        @media (prefers-color-scheme: dark) {
-          color: var(--color-red-400);
-        }
+
+      /* Dark mode override */
+      :root.dark .toast {
+        background-color: var(--color-gray-800);
+        color: var(--color-gray-200);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
       }
-      .toast.info {
-        color: var(--color-blue-500);
-        @media (prefers-color-scheme: dark) {
-          color: var(--color-blue-400);
-        }
-      }
+
+      /* Types */
+      .toast.success { border-left-color: var(--color-green-500); }
+      .toast.error { border-left-color: var(--color-red-500); }
+      .toast.info { border-left-color: var(--color-blue-500); }
+
+      /* Icon */
       .toast-icon {
-        display: inline-flex;
-        height: calc(var(--spacing) * 8);
-        width: calc(var(--spacing) * 8);
         flex-shrink: 0;
-        align-items: center;
-        justify-content: center;
-        border-radius: var(--radius-lg);
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: 0.75rem;
+        margin-top: 0.125rem;
       }
-      .toast-icon.success {
-        background-color: var(--color-green-100);
-        color: var(--color-green-500);
-        @media (prefers-color-scheme: dark) {
-          background-color: var(--color-green-800);
-        }
-        @media (prefers-color-scheme: dark) {
-          color: var(--color-green-200);
-        }
+      .toast.success .toast-icon { color: var(--color-green-500); }
+      .toast.error .toast-icon { color: var(--color-red-500); }
+      .toast.info .toast-icon { color: var(--color-blue-500); }
+
+      /* Content */
+      .toast-content {
+        flex: 1;
+        min-width: 0;
       }
-      .toast-icon.error {
-        background-color: var(--color-red-100);
-        color: var(--color-red-500);
-        @media (prefers-color-scheme: dark) {
-          background-color: var(--color-red-800);
-        }
-        @media (prefers-color-scheme: dark) {
-          color: var(--color-red-200);
-        }
-      }
-      .toast-icon.info {
-        background-color: var(--color-blue-100);
-        color: var(--color-blue-500);
-        @media (prefers-color-scheme: dark) {
-          background-color: var(--color-blue-800);
-        }
-        @media (prefers-color-scheme: dark) {
-          color: var(--color-blue-200);
-        }
+      .toast-title {
+        font-weight: 600;
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
       }
       .toast-message {
-        margin-left: calc(var(--spacing) * 3);
-        flex-grow: 1;
-        font-size: var(--text-sm);
-        line-height: var(--tw-leading, var(--text-sm--line-height));
-        --tw-font-weight: var(--font-weight-normal);
-        font-weight: var(--font-weight-normal);
+        font-size: 0.875rem;
+        color: var(--color-gray-500);
+        line-height: 1.4;
       }
-      .toast-close-button {
-        margin-inline: calc(var(--spacing) * -1.5);
-        margin-block: calc(var(--spacing) * -1.5);
-        margin-left: auto;
-        display: inline-flex;
-        height: calc(var(--spacing) * 8);
-        width: calc(var(--spacing) * 8);
+      :root.dark .toast-message { color: var(--color-gray-400); }
+
+      /* Close Button */
+      .toast-close {
+        flex-shrink: 0;
+        margin-left: 0.75rem;
+        color: var(--color-gray-400);
+        cursor: pointer;
+        border-radius: 0.25rem;
+        padding: 0.25rem;
+        transition: background-color 0.2s;
+        display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: var(--radius-lg);
-        background-color: var(--color-white);
-        padding: calc(var(--spacing) * 1.5);
-        color: var(--color-gray-400);
-        &:hover {
-          @media (hover: hover) {
-            background-color: var(--color-gray-100);
-          }
-        }
-        &:hover {
-          @media (hover: hover) {
-            color: var(--color-gray-900);
-          }
-        }
-        &:focus {
-          --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
-          box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-        }
-        &:focus {
-          --tw-ring-color: var(--color-gray-300);
-        }
-        @media (prefers-color-scheme: dark) {
-          background-color: var(--color-gray-800);
-        }
-        @media (prefers-color-scheme: dark) {
-          color: var(--color-gray-500);
-        }
-        @media (prefers-color-scheme: dark) {
-          &:hover {
-            @media (hover: hover) {
-              background-color: var(--color-gray-700);
-            }
-          }
-        }
-        @media (prefers-color-scheme: dark) {
-          &:hover {
-            @media (hover: hover) {
-              color: var(--color-white);
-            }
-          }
-        }
       }
+      .toast-close:hover { background-color: var(--color-gray-100); color: var(--color-gray-600); }
+      :root.dark .toast-close:hover { background-color: var(--color-gray-700); color: var(--color-gray-200); }
+
+      /* Progress Bar */
+      .toast-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        width: 100%;
+        background-color: transparent;
+      }
+      .toast-progress-bar {
+        height: 100%;
+        width: 100%;
+        background-color: currentColor;
+        opacity: 0.3;
+        transform-origin: left;
+        transform: scaleX(1);
+        transition: transform linear;
+      }
+      .toast.success .toast-progress-bar { background-color: var(--color-green-500); }
+      .toast.error .toast-progress-bar { background-color: var(--color-red-500); }
+      .toast.info .toast-progress-bar { background-color: var(--color-blue-500); }
+
       #search-input {
         margin-bottom: calc(var(--spacing) * 4);
         display: block;
@@ -814,152 +978,189 @@
         padding-block: calc(var(--spacing) * 2);
         --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
         box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+
         &:focus {
           border-color: var(--color-blue-500);
         }
+
         &:focus {
           --tw-ring-color: var(--color-blue-500);
         }
+
         &:focus {
           --tw-outline-style: none;
           outline-style: none;
         }
-        @media (width >= 40rem) {
+
+        @media (width >=40rem) {
           font-size: var(--text-sm);
           line-height: var(--tw-leading, var(--text-sm--line-height));
         }
       }
     }
+
     @property --tw-translate-x {
       syntax: "*";
       inherits: false;
       initial-value: 0;
     }
+
     @property --tw-translate-y {
       syntax: "*";
       inherits: false;
       initial-value: 0;
     }
+
     @property --tw-translate-z {
       syntax: "*";
       inherits: false;
       initial-value: 0;
     }
+
     @property --tw-rotate-x {
       syntax: "*";
       inherits: false;
     }
+
     @property --tw-rotate-y {
       syntax: "*";
       inherits: false;
     }
+
     @property --tw-rotate-z {
       syntax: "*";
       inherits: false;
     }
+
     @property --tw-skew-x {
       syntax: "*";
       inherits: false;
     }
+
     @property --tw-skew-y {
       syntax: "*";
       inherits: false;
     }
+
     @property --tw-space-y-reverse {
       syntax: "*";
       inherits: false;
       initial-value: 0;
     }
+
     @property --tw-font-weight {
       syntax: "*";
       inherits: false;
     }
+
     @property --tw-shadow {
       syntax: "*";
       inherits: false;
       initial-value: 0 0 #0000;
     }
+
     @property --tw-shadow-color {
       syntax: "*";
       inherits: false;
     }
+
     @property --tw-shadow-alpha {
       syntax: "<percentage>";
       inherits: false;
       initial-value: 100%;
     }
+
     @property --tw-inset-shadow {
       syntax: "*";
       inherits: false;
       initial-value: 0 0 #0000;
     }
+
     @property --tw-inset-shadow-color {
       syntax: "*";
       inherits: false;
     }
+
     @property --tw-inset-shadow-alpha {
       syntax: "<percentage>";
       inherits: false;
       initial-value: 100%;
     }
+
     @property --tw-ring-color {
       syntax: "*";
       inherits: false;
     }
+
     @property --tw-ring-shadow {
       syntax: "*";
       inherits: false;
       initial-value: 0 0 #0000;
     }
+
     @property --tw-inset-ring-color {
       syntax: "*";
       inherits: false;
     }
+
     @property --tw-inset-ring-shadow {
       syntax: "*";
       inherits: false;
       initial-value: 0 0 #0000;
     }
+
     @property --tw-ring-inset {
       syntax: "*";
       inherits: false;
     }
+
     @property --tw-ring-offset-width {
       syntax: "<length>";
       inherits: false;
       initial-value: 0px;
     }
+
     @property --tw-ring-offset-color {
       syntax: "*";
       inherits: false;
       initial-value: #fff;
     }
+
     @property --tw-ring-offset-shadow {
       syntax: "*";
       inherits: false;
       initial-value: 0 0 #0000;
     }
+
     @property --tw-border-style {
       syntax: "*";
       inherits: false;
       initial-value: solid;
     }
+
     @property --tw-duration {
       syntax: "*";
       inherits: false;
     }
+
     @property --tw-ease {
       syntax: "*";
       inherits: false;
     }
+
     @keyframes spin {
       to {
         transform: rotate(360deg);
       }
     }
+
     @layer properties {
       @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
-        *, ::before, ::after, ::backdrop {
+
+        *,
+        ::before,
+        ::after,
+        ::backdrop {
           --tw-translate-x: 0;
           --tw-translate-y: 0;
           --tw-translate-z: 0;
@@ -990,336 +1191,502 @@
         }
       }
     }
-</style>
-  </head>
+  </style>
+</head>
+
   <body class="container mx-auto py-12 px-4">
-    <h1>File Server</h1>
-
-    <form id="upload-form" class="flex flex-col items-center justify-center bg-white p-8 rounded-lg shadow-lg mb-8 border-2 border-dashed border-gray-300 transition-colors duration-200" ondragover="this.classList.add('border-blue-500', 'bg-blue-50'); event.preventDefault();" ondragleave="this.classList.remove('border-blue-500', 'bg-blue-50');" ondrop="this.classList.remove('border-blue-500', 'bg-blue-50'); event.preventDefault(); handleDrop(event)">
-      <div class="text-center mb-6 pointer-events-none">
-        <svg class="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-        <p class="text-gray-600 text-lg font-medium">Drag and drop files here</p>
-        <p class="text-gray-400 text-sm">or click to browse</p>
-      </div>
-
-      <label for="file-upload" class="w-full max-w-xs">
-          <input type="file" name="file" id="file-upload" class="hidden" multiple required onchange="handleFiles(this.files)"/>
-          <div class="cursor-pointer bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700 transition-colors duration-200 text-center shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-            Select Files
-          </div>
-      </label>
-
-      <div id="upload-queue" class="w-full mt-8 hidden">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold text-gray-700">Upload Queue</h3>
-            <button type="button" id="clear-queue-button" class="text-sm text-red-500 hover:text-red-700 font-medium">Clear All</button>
-          </div>
-          <ul id="upload-items" class="bg-gray-50 rounded-lg border border-gray-200 divide-y divide-gray-200 max-h-60 overflow-y-auto">
-          </ul>
-      </div>
-
-      <button type="submit" id="upload-button" class="mt-6 w-full max-w-xs bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transform hover:-translate-y-0.5">
-          <span id="button-text">Start Upload</span>
-          <div id="button-spinner" class="spinner hidden ml-2"></div>
+  
+  <div class="fixed top-4 right-4 z-50">
+      <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-110 focus:outline-none" aria-label="Toggle Dark Mode">
+          <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+          <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
       </button>
-    </form>
+  </div>
 
-    <div class="mb-6">
-        <input type="text" id="search-input" placeholder="Search files..." />
+  <h1>File Server</h1>
+
+  <form id="upload-form"
+    class="flex flex-col items-center justify-center bg-white p-8 rounded-lg shadow-lg mb-8 border-2 border-dashed border-gray-300 transition-colors duration-200"
+    ondragover="this.classList.add('border-blue-500', 'bg-blue-50'); event.preventDefault();"
+    ondragleave="this.classList.remove('border-blue-500', 'bg-blue-50');"
+    ondrop="this.classList.remove('border-blue-500', 'bg-blue-50'); event.preventDefault(); handleDrop(event)">
+    <div class="text-center mb-6 pointer-events-none">
+      <svg class="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+      </svg>
+      <p class="text-gray-600 text-lg font-medium">Drag and drop files here</p>
+      <p class="text-gray-400 text-sm">or click to browse</p>
     </div>
 
-    <div id="file-list">
-      <h2>Uploaded Files</h2>
-      <div id="files">
-        <p class="text-center text-gray-600"><div class="spinner spinner-gray mx-auto mb-2"></div> Loading files...</p>
+    <label for="file-upload" class="w-full max-w-xs">
+      <input type="file" name="file" id="file-upload" class="hidden" multiple required
+        onchange="handleFiles(this.files)" />
+      <div
+        class="cursor-pointer bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700 transition-colors duration-200 text-center shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+        Select Files
+      </div>
+    </label>
+
+    <div id="upload-queue" class="w-full mt-8 hidden">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold text-gray-700">Upload Queue</h3>
+        <button type="button" id="clear-queue-button" class="text-sm text-red-500 hover:text-red-700 font-medium">Clear
+          All</button>
+      </div>
+      <ul id="upload-items"
+        class="bg-gray-50 rounded-lg border border-gray-200 divide-y divide-gray-200 max-h-60 overflow-y-auto">
+      </ul>
+    </div>
+
+    <button type="submit" id="upload-button"
+      class="mt-6 w-full max-w-xs bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transform hover:-translate-y-0.5">
+      <span id="button-text">Start Upload</span>
+      <div id="button-spinner" class="spinner hidden ml-2"></div>
+    </button>
+  </form>
+
+  <div class="mb-6">
+    <input type="text" id="search-input" placeholder="Search files..." />
+  </div>
+
+  <div id="file-list">
+    <h2>Uploaded Files</h2>
+    <div id="files">
+      <p class="text-center text-gray-600">
+      <div class="spinner spinner-gray mx-auto mb-2"></div> Loading files...</p>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <!-- File Details Modal -->
+  <div id="file-modal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-gray-500/75 dark:bg-gray-900/80 transition-opacity backdrop-blur-sm" aria-hidden="true" onclick="closeModal()"></div>
+
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <!-- Modal Panel -->
+        <div class="relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-95 opacity-0 duration-300 ease-out" id="modal-panel">
+          
+          <div class="bg-white dark:bg-gray-800 px-4 pb-4 pt-5 sm:p-6 sm:pb-4 transition-colors duration-300">
+            <div class="sm:flex sm:items-start">
+              <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+                <h3 class="text-lg font-bold leading-6 text-gray-900 dark:text-gray-100 mb-4 transition-colors duration-300" id="modal-title">File Details</h3>
+                
+                <div id="modal-preview" class="mb-6 flex justify-center items-center bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 min-h-[200px] overflow-hidden transition-colors duration-300">
+                   <!-- Preview content injected here -->
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex justify-between border-b border-gray-100 dark:border-gray-700 pb-2 transition-colors duration-300">
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-300">Name</span>
+                        <span class="text-sm text-gray-900 dark:text-gray-200 text-right truncate max-w-[250px] transition-colors duration-300" id="modal-filename"></span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-100 dark:border-gray-700 pb-2 transition-colors duration-300">
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-300">Size</span>
+                        <span class="text-sm text-gray-900 dark:text-gray-200 transition-colors duration-300" id="modal-size"></span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-100 dark:border-gray-700 pb-2 transition-colors duration-300">
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-300">Type</span>
+                        <span class="text-sm text-gray-900 dark:text-gray-200 transition-colors duration-300" id="modal-type"></span>
+                    </div>
+                     <div class="flex justify-between border-b border-gray-100 dark:border-gray-700 pb-2 transition-colors duration-300">
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors duration-300">Uploaded</span>
+                        <span class="text-sm text-gray-900 dark:text-gray-200 transition-colors duration-300" id="modal-date"></span>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gray-50 dark:bg-gray-700/50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 transition-colors duration-300">
+            <a id="modal-download-btn" href="#" target="_blank" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto transition-colors duration-200">Download</a>
+            <button type="button" id="modal-copy-btn" class="mt-3 inline-flex w-full justify-center rounded-md bg-white dark:bg-gray-600 dark:text-gray-200 dark:ring-gray-500 dark:hover:bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:mr-3 transition-colors duration-200">Copy Link</button>
+            <button type="button" id="modal-delete-btn" class="mt-3 inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:mt-0 sm:w-auto sm:mr-auto transition-colors duration-200">Delete</button>
+            <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white dark:bg-gray-600 dark:text-gray-200 dark:ring-gray-500 dark:hover:bg-gray-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-colors duration-200" onclick="closeModal()">Close</button>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div id="toast-container"></div>
+  <script>
+    const form = document.getElementById('upload-form')
+    const fileListContainer = document.getElementById('files')
+    const uploadButton = document.getElementById('upload-button')
+    const buttonText = document.getElementById('button-text')
+    const buttonSpinner = document.getElementById('button-spinner')
+    const fileInput = document.getElementById('file-upload')
+    const uploadQueue = document.getElementById('upload-queue')
+    const uploadItemsList = document.getElementById('upload-items')
+    const searchInput = document.getElementById('search-input')
+    const toastContainer = document.getElementById('toast-container')
+    const clearQueueButton = document.getElementById('clear-queue-button')
 
-    <script>
-      const form = document.getElementById('upload-form')
-      const fileListContainer = document.getElementById('files')
-      const uploadButton = document.getElementById('upload-button')
-      const buttonText = document.getElementById('button-text')
-      const buttonSpinner = document.getElementById('button-spinner')
-      const fileInput = document.getElementById('file-upload')
-      const uploadQueue = document.getElementById('upload-queue')
-      const uploadItemsList = document.getElementById('upload-items')
-      const searchInput = document.getElementById('search-input')
-      const toastContainer = document.getElementById('toast-container')
-      const clearQueueButton = document.getElementById('clear-queue-button')
+    let allFiles = []; // To store all fetched files for search
+    let currentUploads = []; // Keep track of ongoing uploads if needed (not used for aborting in this version)
 
-      let allFiles = []; // To store all fetched files for search
-      let currentUploads = []; // Keep track of ongoing uploads if needed (not used for aborting in this version)
+    // --- Toast Notification System ---
+    function showToast(message, type = 'info', duration = 5000) {
+      const toast = document.createElement('div')
+      toast.className = `toast ${type}`
+      
+      const iconMap = {
+        'success': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`,
+        'error': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`,
+        'info': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`
+      };
 
-      // --- Toast Notification System ---
-      function showToast(message, type = 'info', duration = 5000) {
-        const toast = document.createElement('div')
-        toast.className = `toast ${type} opacity-0 transform translate-x-full`
-        toast.setAttribute('role', 'alert')
+      const titleMap = {
+        'success': 'Success',
+        'error': 'Error',
+        'info': 'Information'
+      };
 
-        const iconHtml = {
-            'success': '<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/></svg>',
-            'error': '<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 1 1-2 0v-3a1 1 0 1 1 2 0v3Z"/></svg>',
-            'info': '<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 1 1-2 0V6a1 1 0 0 1 2 0v5Z"/></svg>'
-        }
-
-        toast.innerHTML = `
-            <div class="toast-icon ${type}">
-                ${iconHtml[type]}
-                <span class="sr-only">${type.charAt(0).toUpperCase() + type.slice(1)} icon</span>
+      toast.innerHTML = `
+            <div class="toast-icon">
+                ${iconMap[type]}
             </div>
-            <div class="toast-message">${message}</div>
-            <button type="button" class="toast-close-button" data-dismiss-target=".toast" aria-label="Close">
-                <span class="sr-only">Close toast</span>
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                </svg>
+            <div class="toast-content">
+                <div class="toast-title">${titleMap[type]}</div>
+                <div class="toast-message">${message}</div>
+            </div>
+            <button type="button" class="toast-close" aria-label="Close">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-        `
+            <div class="toast-progress">
+                <div class="toast-progress-bar" style="transition-duration: ${duration}ms"></div>
+            </div>
+      `
 
-        toastContainer.appendChild(toast)
+      toastContainer.appendChild(toast)
 
-        // Animate in
-        requestAnimationFrame(() => {
-             toast.classList.remove('opacity-0', 'translate-x-full');
-             toast.classList.add('opacity-100', 'translate-x-0');
-        })
+      // Enter animation
+      requestAnimationFrame(() => {
+        toast.classList.add('visible');
+        toast.querySelector('.toast-progress-bar').style.transform = 'scaleX(0)';
+      })
+
+      // Timer Logic
+      let timeoutId;
+      let startTime = Date.now();
+      let remaining = duration;
+
+      const dismiss = () => {
+          toast.classList.remove('visible');
+          // Wait for transition to remove element
+          setTimeout(() => {
+              if (toast.parentElement) toast.remove();
+          }, 400); // 400ms matches CSS transition
+      };
+
+      const resume = () => {
+          if (remaining <= 0) return;
+          startTime = Date.now();
+          // Resume transition
+          const progressBar = toast.querySelector('.toast-progress-bar');
+          progressBar.style.transitionDuration = `${remaining}ms`;
+          progressBar.style.transform = 'scaleX(0)';
+          
+          timeoutId = setTimeout(dismiss, remaining);
+      };
+
+      const pause = () => {
+          clearTimeout(timeoutId);
+          remaining -= Date.now() - startTime;
+          // Pause transition
+          const progressBar = toast.querySelector('.toast-progress-bar');
+          const computedStyle = getComputedStyle(progressBar);
+          const currentWidth = computedStyle.width;
+          // We can't easily get the exact scaleX from computed style matrix for pausing perfectly with CSS transitions
+          // So we simply reset transition to none and set width/transform to current state.
+          // However, getting the exact current state of a transform transition is tricky.
+          // A simpler approach for the visual bar is just to stop it, but matching the exact position is hard without Web Animations API.
+          // Let's try Web Animations API if available or just simple pause.
+          
+          // Actually, simply freezing it visually might be overkill if we just want logic pause.
+          // But to make it "much better", visual pause is nice.
+          // We can use animation-play-state if we used keyframes, but we used transition.
+          
+          // Let's stick to logical pause and let the bar continue (or jump).
+          // Better: Reset the bar transition to stop it.
+          progressBar.style.transition = 'none';
+          // Calculate current scale roughly based on time?
+          // Let's just keep the bar moving for now or simpler:
+          // Use animation instead of transition for easier pausing.
+          
+          // Re-implementing visually perfect pause is complex.
+          // Let's just pause the *dismissal* logic. The bar might finish early, which is a minor visual bug.
+          // To fix the visual bug, we'd need to compute the current scale.
+      };
+      
+      // Let's refine the progress bar to use Web Animations API for better control
+      const progressBar = toast.querySelector('.toast-progress-bar');
+      // Reset style from template
+      progressBar.style.transform = 'scaleX(1)';
+      progressBar.style.transition = 'none';
+      
+      let animation;
+      
+      if (typeof toast.animate === 'function') {
+          animation = progressBar.animate(
+              [{ transform: 'scaleX(1)' }, { transform: 'scaleX(0)' }],
+              { duration: duration, fill: 'forwards', easing: 'linear' }
+          );
+          
+          timeoutId = setTimeout(dismiss, duration);
+          
+          toast.addEventListener('mouseenter', () => {
+              clearTimeout(timeoutId);
+              animation.pause();
+          });
+          
+          toast.addEventListener('mouseleave', () => {
+              animation.play();
+              // Calculate remaining time from animation
+              const remainingTime = duration - animation.currentTime;
+              timeoutId = setTimeout(dismiss, remainingTime);
+          });
+          
+      } else {
+          // Fallback for older browsers
+          progressBar.style.transition = `transform ${duration}ms linear`;
+          requestAnimationFrame(() => progressBar.style.transform = 'scaleX(0)');
+          timeoutId = setTimeout(dismiss, duration);
+      }
+
+      toast.querySelector('.toast-close').addEventListener('click', dismiss);
+    }
+
+    function dismissToast(toast) {
+       // Compatibility if called externally (though usage inside showToast is self-contained)
+       // If external caller passes a toast element:
+       toast.classList.remove('visible');
+       setTimeout(() => {
+           if (toast.parentElement) toast.remove();
+       }, 400);
+    }
 
 
-        const closeButton = toast.querySelector('.toast-close-button')
-        closeButton.addEventListener('click', () => dismissToast(toast))
+    // --- File Handling and Upload ---
 
-        if (duration > 0) {
-          setTimeout(() => dismissToast(toast), duration)
+    const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB chunks
+    const MAX_RETRIES = 3;
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      handleFiles(files);
+    }
+
+    function handleFiles(files) {
+      if (files.length > 0) {
+        uploadQueue.classList.remove('hidden');
+        uploadButton.disabled = false;
+        // clearQueueButton.disabled = false; // logic moved
+
+        // Don't clear existing if adding more? For now, append
+        // uploadItemsList.innerHTML = ''; 
+
+        Array.from(files).forEach(file => {
+          addFileToQueue(file);
+        });
+
+        // Update input files if possible (for form submission fallback)
+        // fileInput.files = files; // Note: DataTransfer can help here but complex for appending
+      }
+    }
+
+    function formatSize(size) {
+      const i = size === 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024))
+      return parseFloat((size / Math.pow(1024, i)).toFixed(2)) + ' ' + ['B', 'KB', 'MB', 'GB'][i]
+    }
+    function formatDate(date) {
+      return new Date(date).toLocaleString()
+    }
+
+    async function uploadChunk(uploadId, chunkIndex, chunk, retries = 0) {
+      const formData = new FormData();
+      formData.append('uploadId', uploadId);
+      formData.append('chunkIndex', chunkIndex.toString());
+      formData.append('chunk', chunk);
+
+      try {
+        const response = await fetch('/upload/chunk', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({error: 'Unknown error'}));
+          throw new Error(errorData.error || `Chunk upload failed with status ${response.status}`);
         }
-      }
 
-      function dismissToast(toast) {
-          toast.classList.remove('opacity-100', 'translate-x-0');
-          toast.classList.add('opacity-0', 'translate-x-full');
-          toast.addEventListener('transitionend', () => toast.remove());
-      }
-
-
-      // --- File Handling and Upload ---
-
-      const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB chunks
-      const MAX_RETRIES = 3;
-
-      function handleDrop(e) {
-        const dt = e.dataTransfer;
-        const files = dt.files;
-        handleFiles(files);
-      }
-
-      function handleFiles(files) {
-        if (files.length > 0) {
-            uploadQueue.classList.remove('hidden');
-            uploadButton.disabled = false;
-            // clearQueueButton.disabled = false; // logic moved
-
-            // Don't clear existing if adding more? For now, append
-            // uploadItemsList.innerHTML = ''; 
-            
-            Array.from(files).forEach(file => {
-                addFileToQueue(file);
-            });
-            
-            // Update input files if possible (for form submission fallback)
-            // fileInput.files = files; // Note: DataTransfer can help here but complex for appending
+        return await response.json();
+      } catch (error) {
+        if (retries < MAX_RETRIES) {
+          console.log(`Retrying chunk ${chunkIndex}, attempt ${retries + 1}/${MAX_RETRIES}`);
+          await new Promise(resolve => setTimeout(resolve, 1000 * (retries + 1))); // Exponential backoff
+          return uploadChunk(uploadId, chunkIndex, chunk, retries + 1);
         }
+        throw error;
+      }
+    }
+
+    async function uploadFileChunked(file, listItem) {
+      const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+
+      // Step 1: Initialize chunked upload
+      updateUploadStatus(listItem, 'Initializing...', 'text-blue-600');
+
+      const initResponse = await fetch('/upload/init', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          fileName: file.name,
+          fileType: file.type || 'application/octet-stream',
+          totalChunks,
+          totalSize: file.size,
+        }),
+      });
+
+      if (!initResponse.ok) {
+        const errorData = await initResponse.json().catch(() => ({error: 'Unknown error'}));
+        throw new Error(errorData.error || 'Failed to initialize upload');
       }
 
-      function formatSize(size) {
-        const i = size === 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024))
-        return parseFloat((size / Math.pow(1024, i)).toFixed(2)) + ' ' + ['B', 'KB', 'MB', 'GB'][i]
-      }
-      function formatDate(date) {
-        return new Date(date).toLocaleString()
-      }
+      const {uploadId} = await initResponse.json();
 
-      async function uploadChunk(uploadId, chunkIndex, chunk, retries = 0) {
-        const formData = new FormData();
-        formData.append('uploadId', uploadId);
-        formData.append('chunkIndex', chunkIndex.toString());
-        formData.append('chunk', chunk);
+      // Step 2: Upload chunks
+      updateUploadStatus(listItem, `Uploading 0/${totalChunks}`, 'text-blue-600');
+
+      for (let i = 0; i < totalChunks; i++) {
+        const start = i * CHUNK_SIZE;
+        const end = Math.min(start + CHUNK_SIZE, file.size);
+        const chunk = file.slice(start, end);
 
         try {
-          const response = await fetch('/upload/chunk', {
-            method: 'POST',
-            body: formData,
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-            throw new Error(errorData.error || `Chunk upload failed with status ${response.status}`);
-          }
-
-          return await response.json();
+          await uploadChunk(uploadId, i, chunk);
         } catch (error) {
-          if (retries < MAX_RETRIES) {
-            console.log(`Retrying chunk ${chunkIndex}, attempt ${retries + 1}/${MAX_RETRIES}`);
-            await new Promise(resolve => setTimeout(resolve, 1000 * (retries + 1))); // Exponential backoff
-            return uploadChunk(uploadId, chunkIndex, chunk, retries + 1);
-          }
+          // Abort upload on failure
+          await fetch('/upload/abort', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({uploadId}),
+          }).catch(() => { });
+          throw error;
+        }
+
+        const progress = ((i + 1) / totalChunks) * 100;
+        updateUploadProgress(listItem, progress);
+        updateUploadStatus(listItem, `Uploading ${i + 1}/${totalChunks}`, 'text-blue-600');
+      }
+
+      // Step 3: Complete upload
+      updateUploadStatus(listItem, 'Finalizing...', 'text-blue-600');
+
+      const completeResponse = await fetch('/upload/complete', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({uploadId}),
+      });
+
+      if (!completeResponse.ok) {
+        const errorData = await completeResponse.json().catch(() => ({error: 'Unknown error'}));
+        throw new Error(errorData.error || 'Failed to complete upload');
+      }
+
+      return await completeResponse.json();
+    }
+
+    async function uploadFile(file, listItem) {
+      // Use chunked upload for files larger than chunk size, or regular upload for smaller files
+      const useChunkedUpload = file.size > CHUNK_SIZE;
+
+      if (useChunkedUpload) {
+        try {
+          const data = await uploadFileChunked(file, listItem);
+          updateUploadStatus(listItem, 'Success', 'text-green-600');
+          showToast(`${file.name} uploaded successfully!`, 'success');
+          return data;
+        } catch (error) {
+          updateUploadStatus(listItem, 'Failed', 'text-red-600');
+          showToast(`${file.name} upload failed: ${error.message}`, 'error');
           throw error;
         }
       }
 
-      async function uploadFileChunked(file, listItem) {
-        const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+      // Regular upload for small files
+      return new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append('file', file);
 
-        // Step 1: Initialize chunked upload
-        updateUploadStatus(listItem, 'Initializing...', 'text-blue-600');
+        const xhr = new XMLHttpRequest();
+        const url = '/upload';
 
-        const initResponse = await fetch('/upload/init', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fileName: file.name,
-            fileType: file.type || 'application/octet-stream',
-            totalChunks,
-            totalSize: file.size,
-          }),
-        });
+        xhr.open('POST', url, true);
 
-        if (!initResponse.ok) {
-          const errorData = await initResponse.json().catch(() => ({ error: 'Unknown error' }));
-          throw new Error(errorData.error || 'Failed to initialize upload');
-        }
-
-        const { uploadId } = await initResponse.json();
-
-        // Step 2: Upload chunks
-        updateUploadStatus(listItem, `Uploading 0/${totalChunks}`, 'text-blue-600');
-
-        for (let i = 0; i < totalChunks; i++) {
-          const start = i * CHUNK_SIZE;
-          const end = Math.min(start + CHUNK_SIZE, file.size);
-          const chunk = file.slice(start, end);
-
-          try {
-            await uploadChunk(uploadId, i, chunk);
-          } catch (error) {
-            // Abort upload on failure
-            await fetch('/upload/abort', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ uploadId }),
-            }).catch(() => {});
-            throw error;
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentComplete = (event.loaded / event.total) * 100;
+            updateUploadProgress(listItem, percentComplete);
           }
+        };
 
-          const progress = ((i + 1) / totalChunks) * 100;
-          updateUploadProgress(listItem, progress);
-          updateUploadStatus(listItem, `Uploading ${i + 1}/${totalChunks}`, 'text-blue-600');
-        }
-
-        // Step 3: Complete upload
-        updateUploadStatus(listItem, 'Finalizing...', 'text-blue-600');
-
-        const completeResponse = await fetch('/upload/complete', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ uploadId }),
-        });
-
-        if (!completeResponse.ok) {
-          const errorData = await completeResponse.json().catch(() => ({ error: 'Unknown error' }));
-          throw new Error(errorData.error || 'Failed to complete upload');
-        }
-
-        return await completeResponse.json();
-      }
-
-      async function uploadFile(file, listItem) {
-        // Use chunked upload for files larger than chunk size, or regular upload for smaller files
-        const useChunkedUpload = file.size > CHUNK_SIZE;
-
-        if (useChunkedUpload) {
-          try {
-            const data = await uploadFileChunked(file, listItem);
-            updateUploadStatus(listItem, 'Success', 'text-green-600');
-            showToast(`${file.name} uploaded successfully!`, 'success');
-            return data;
-          } catch (error) {
-            updateUploadStatus(listItem, 'Failed', 'text-red-600');
-            showToast(`${file.name} upload failed: ${error.message}`, 'error');
-            throw error;
-          }
-        }
-
-        // Regular upload for small files
-        return new Promise((resolve, reject) => {
-            const formData = new FormData();
-            formData.append('file', file);
-
-            const xhr = new XMLHttpRequest();
-            const url = '/upload';
-
-            xhr.open('POST', url, true);
-
-            xhr.upload.onprogress = (event) => {
-                if (event.lengthComputable) {
-                    const percentComplete = (event.loaded / event.total) * 100;
-                    updateUploadProgress(listItem, percentComplete);
-                }
-            };
-
-            xhr.onload = () => {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    try {
-                        const data = JSON.parse(xhr.responseText);
-                        if (data.file_path) {
-                            updateUploadStatus(listItem, 'Success', 'text-green-600');
-                            showToast(`${file.name} uploaded successfully!`, 'success');
-                            resolve(data);
-                        } else {
-                            updateUploadStatus(listItem, 'Failed', 'text-red-600');
-                            showToast(`${file.name} upload failed: ${data.error || 'Unknown error'}`, 'error');
-                            reject(new Error(data.error || 'Unknown upload error'));
-                        }
-                    } catch (e) {
-                        updateUploadStatus(listItem, 'Failed', 'text-red-600');
-                        showToast(`${file.name} upload failed: Invalid server response.`, 'error');
-                        console.error('Failed to parse JSON response:', e);
-                        reject(e);
-                    }
-                } else {
-                    updateUploadStatus(listItem, 'Failed', 'text-red-600');
-                     showToast(`${file.name} upload failed with status: ${xhr.status}`, 'error');
-                    console.error('Upload failed with status:', xhr.status, xhr.responseText);
-                    reject(new Error(`Upload failed with status ${xhr.status}`));
-                }
-            };
-
-            xhr.onerror = () => {
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              const data = JSON.parse(xhr.responseText);
+              if (data.file_path) {
+                updateUploadStatus(listItem, 'Success', 'text-green-600');
+                showToast(`${file.name} uploaded successfully!`, 'success');
+                resolve(data);
+              } else {
                 updateUploadStatus(listItem, 'Failed', 'text-red-600');
-                 showToast(`${file.name} upload failed due to network error.`, 'error');
-                console.error('Network error during upload of', file.name);
-                reject(new Error('Network error'));
-            };
+                showToast(`${file.name} upload failed: ${data.error || 'Unknown error'}`, 'error');
+                reject(new Error(data.error || 'Unknown upload error'));
+              }
+            } catch (e) {
+              updateUploadStatus(listItem, 'Failed', 'text-red-600');
+              showToast(`${file.name} upload failed: Invalid server response.`, 'error');
+              console.error('Failed to parse JSON response:', e);
+              reject(e);
+            }
+          } else {
+            updateUploadStatus(listItem, 'Failed', 'text-red-600');
+            showToast(`${file.name} upload failed with status: ${xhr.status}`, 'error');
+            console.error('Upload failed with status:', xhr.status, xhr.responseText);
+            reject(new Error(`Upload failed with status ${xhr.status}`));
+          }
+        };
 
-            updateUploadStatus(listItem, 'Uploading...', 'text-blue-600');
-            xhr.send(formData);
-        });
+        xhr.onerror = () => {
+          updateUploadStatus(listItem, 'Failed', 'text-red-600');
+          showToast(`${file.name} upload failed due to network error.`, 'error');
+          console.error('Network error during upload of', file.name);
+          reject(new Error('Network error'));
+        };
+
+        updateUploadStatus(listItem, 'Uploading...', 'text-blue-600');
+        xhr.send(formData);
+      });
+    }
+
+    function addFileToQueue(file) {
+      const listItem = document.createElement('li');
+      listItem.className = 'p-4 flex items-center justify-between hover:bg-gray-100 transition-colors duration-150';
+
+      // Determine icon based on file type
+      let icon = '<svg style="width: 32px; height: 32px; margin-right: 12px;" class="text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>';
+      if (file.type.startsWith('image/')) {
+        icon = '<svg style="width: 32px; height: 32px; margin-right: 12px;" class="text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
+      } else if (file.type.startsWith('video/')) {
+        icon = '<svg style="width: 32px; height: 32px; margin-right: 12px;" class="text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>';
       }
 
-      function addFileToQueue(file) {
-          const listItem = document.createElement('li');
-          listItem.className = 'p-4 flex items-center justify-between hover:bg-gray-100 transition-colors duration-150';
-          
-          // Determine icon based on file type
-          let icon = '<svg style="width: 32px; height: 32px; margin-right: 12px;" class="text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>';
-          if (file.type.startsWith('image/')) {
-            icon = '<svg style="width: 32px; height: 32px; margin-right: 12px;" class="text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
-          } else if (file.type.startsWith('video/')) {
-             icon = '<svg style="width: 32px; height: 32px; margin-right: 12px;" class="text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>';
-          }
-
-          listItem.innerHTML = `
+      listItem.innerHTML = `
               <div class="flex items-center flex-grow min-w-0">
                   ${icon}
                   <div class="flex-col min-w-0 overflow-hidden">
@@ -1339,265 +1706,385 @@
                   </button>
               </div>
           `;
-          
-          // Store file object on the element for later retrieval during upload loop
-          listItem.fileObject = file;
-          
-          uploadItemsList.appendChild(listItem);
-          return listItem;
-      }
 
-      function checkQueueEmpty() {
-        if (uploadItemsList.children.length === 0) {
-            uploadQueue.classList.add('hidden');
-            uploadButton.disabled = true;
+      // Store file object on the element for later retrieval during upload loop
+      listItem.fileObject = file;
+
+      uploadItemsList.appendChild(listItem);
+      return listItem;
+    }
+
+    function checkQueueEmpty() {
+      if (uploadItemsList.children.length === 0) {
+        uploadQueue.classList.add('hidden');
+        uploadButton.disabled = true;
+      }
+    }
+
+    function updateUploadStatus(listItem, statusText, statusClass) {
+      const statusSpan = listItem.querySelector('.status');
+      statusSpan.textContent = statusText;
+      // statusSpan.className = `status mr-2 text-xs ${statusClass}`; // Keeping existing classes + new color
+      statusSpan.className = `status text-xs font-semibold mb-1 ${statusClass}`;
+    }
+
+    function updateUploadProgress(listItem, percent) {
+      const progressContainer = listItem.querySelector('.upload-progress-container');
+      const progressBar = listItem.querySelector('.upload-progress-bar');
+      progressContainer.classList.remove('hidden');
+      progressBar.style.width = `${percent}%`;
+    }
+
+    function clearUploadQueue() {
+      uploadItemsList.innerHTML = '';
+      uploadQueue.classList.add('hidden');
+      fileInput.value = '';
+      showToast('Upload queue cleared.', 'info', 2000);
+    }
+
+    async function processUploadQueue(files) {
+      uploadButton.disabled = true;
+      buttonText.textContent = 'Uploading...';
+      buttonSpinner.classList.remove('hidden');
+      clearQueueButton.disabled = true;
+
+      uploadQueue.classList.remove('hidden');
+      // uploadItemsList.innerHTML = ''; // Don't clear, append
+
+      // Get files from list items instead of input directly
+      const listItems = Array.from(uploadItemsList.children);
+
+      for (const listItem of listItems) {
+        const file = listItem.fileObject;
+        if (!file) continue; // Should have file attached
+
+        // Skip if already uploaded or uploading
+        if (listItem.querySelector('.status').textContent === 'Success') continue;
+
+        // Disable delete button during upload
+        const deleteBtn = listItem.querySelector('button');
+        if (deleteBtn) deleteBtn.remove();
+
+        try {
+          await uploadFile(file, listItem);
+        } catch (error) {
+          continue;
         }
       }
 
-      function updateUploadStatus(listItem, statusText, statusClass) {
-          const statusSpan = listItem.querySelector('.status');
-          statusSpan.textContent = statusText;
-          // statusSpan.className = `status mr-2 text-xs ${statusClass}`; // Keeping existing classes + new color
-          statusSpan.className = `status text-xs font-semibold mb-1 ${statusClass}`;
+      uploadButton.disabled = false;
+      buttonText.textContent = 'Upload Files';
+      buttonSpinner.classList.add('hidden');
+      clearQueueButton.disabled = false;
+
+      fileInput.value = '';
+      fetchFiles();
+    }
+
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const files = fileInput.files; // We might want to look at queue items instead
+      if (uploadItemsList.children.length > 0) {
+        processUploadQueue(files);
+      } else {
+        showToast('Please select files to upload.', 'info');
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        uploadQueue.classList.remove('hidden');
+        uploadItemsList.innerHTML = '';
+        Array.from(fileInput.files).forEach(file => {
+          addFileToQueue(file);
+        });
+      } else {
+        uploadQueue.classList.add('hidden');
+        uploadItemsList.innerHTML = '';
+      }
+      uploadButton.disabled = fileInput.files.length === 0;
+      clearQueueButton.disabled = fileInput.files.length === 0;
+    });
+
+
+    // --- Modal Functions ---
+    const modal = document.getElementById('file-modal');
+    
+    function openModal(file) {
+        document.getElementById('modal-filename').textContent = file.name;
+        document.getElementById('modal-size').textContent = formatSize(file.size);
+        document.getElementById('modal-type').textContent = file.storage_type;
+        document.getElementById('modal-date').textContent = formatDate(file.created_at);
+        
+        // Setup Download Link
+        const downloadBtn = document.getElementById('modal-download-btn');
+        downloadBtn.href = `/files/uploads/${file.id}`;
+        
+        // Setup Copy Link
+        const copyBtn = document.getElementById('modal-copy-btn');
+        copyBtn.onclick = () => copyToClipboard(`${window.location.origin}/files/uploads/${file.id}`);
+        
+        // Setup Delete
+        const deleteBtn = document.getElementById('modal-delete-btn');
+        deleteBtn.onclick = async () => {
+             const success = await deleteFile(file.id, deleteBtn);
+             if (success) {
+                 closeModal();
+             }
+        };
+
+        // Preview
+        const previewContainer = document.getElementById('modal-preview');
+        previewContainer.innerHTML = '';
+        const isImage = file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+        const isVideo = file.name.match(/\.(mp4|webm|ogg|mov)$/i);
+        
+        if (isImage) {
+            previewContainer.innerHTML = `<img src="/files/uploads/${file.id}" class="max-h-60 rounded shadow-sm" alt="${file.name}">`;
+        } else if (isVideo) {
+             previewContainer.innerHTML = `<video controls class="max-h-60 rounded shadow-sm w-full"><source src="/files/uploads/${file.id}" type="video/mp4">Your browser does not support the video tag.</video>`;
+        } else {
+             // Generic Icon
+             previewContainer.innerHTML = `<svg class="w-24 h-24 text-gray-300 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>`;
+        }
+
+        modal.classList.remove('hidden');
+        // Animate Modal In
+        setTimeout(() => {
+             const panel = document.getElementById('modal-panel');
+             panel.classList.remove('scale-95', 'opacity-0');
+             panel.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    function closeModal() {
+        const panel = document.getElementById('modal-panel');
+        panel.classList.remove('scale-100', 'opacity-100');
+        panel.classList.add('scale-95', 'opacity-0');
+        
+        // Wait for animation to finish before hiding
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            // Stop video if playing
+            const video = modal.querySelector('video');
+            if(video) video.pause();
+        }, 300);
+    }
+
+
+    // --- File Listing and Search ---
+    function renderFiles(filesToRender) {
+      fileListContainer.innerHTML = ''
+
+      // Grid Layout
+      fileListContainer.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4';
+
+      if (filesToRender.length === 0) {
+        fileListContainer.className = ''; // Reset
+        fileListContainer.innerHTML = '<p class="text-center text-gray-600 dark:text-gray-400 py-8">No files found.</p>';
+        return
       }
 
-      function updateUploadProgress(listItem, percent) {
-          const progressContainer = listItem.querySelector('.upload-progress-container');
-          const progressBar = listItem.querySelector('.upload-progress-bar');
-          progressContainer.classList.remove('hidden');
-          progressBar.style.width = `${percent}%`;
-      }
+      filesToRender
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .forEach((file, index) => {
+          const fileItem = document.createElement('div')
+          fileItem.className = 'group relative flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 ease-out overflow-hidden cursor-pointer transform hover:scale-[1.02] opacity-0 translate-y-4'
+          // Staggered fade-in
+          setTimeout(() => {
+              fileItem.classList.remove('opacity-0', 'translate-y-4');
+          }, index * 50);
 
-      function clearUploadQueue() {
-          uploadItemsList.innerHTML = '';
-          uploadQueue.classList.add('hidden');
-          fileInput.value = '';
-          showToast('Upload queue cleared.', 'info', 2000);
-      }
-
-      async function processUploadQueue(files) {
-          uploadButton.disabled = true;
-          buttonText.textContent = 'Uploading...';
-          buttonSpinner.classList.remove('hidden');
-          clearQueueButton.disabled = true;
-
-          uploadQueue.classList.remove('hidden');
-          // uploadItemsList.innerHTML = ''; // Don't clear, append
-
-          // Get files from list items instead of input directly
-          const listItems = Array.from(uploadItemsList.children);
+          fileItem.onclick = (e) => {
+              openModal(file);
+          }
           
-          for (const listItem of listItems) {
-              const file = listItem.fileObject;
-              if (!file) continue; // Should have file attached
-              
-              // Skip if already uploaded or uploading
-              if (listItem.querySelector('.status').textContent === 'Success') continue;
+          let previewContent = '';
+          const isImage = file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+          
+          if (isImage) {
+               previewContent = `<img src="/files/uploads/${file.id}" loading="lazy" class="w-full h-32 object-cover bg-gray-100 dark:bg-gray-900 transition-opacity duration-300" alt="${file.name}">`;
+          } else {
+               let iconColor = 'text-gray-400 dark:text-gray-500';
+               let iconSvg = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>';
+               
+               if (file.name.match(/\.(mp4|webm|ogg|mov)$/i)) {
+                   iconColor = 'text-red-500 dark:text-red-400';
+                   iconSvg = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>';
+               } else if (file.name.match(/\.(zip|rar|7z|tar|gz)$/i)) {
+                    iconColor = 'text-yellow-500 dark:text-yellow-400';
+                    iconSvg = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>';
+               }
 
-              // Disable delete button during upload
-              const deleteBtn = listItem.querySelector('button');
-              if(deleteBtn) deleteBtn.remove();
-
-              try {
-                  await uploadFile(file, listItem);
-              } catch (error) {
-                continue;
-              }
+               previewContent = `<div class="w-full h-32 bg-gray-50 dark:bg-gray-700 flex items-center justify-center transition-colors duration-300"><svg class="w-12 h-12 ${iconColor}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${iconSvg}</svg></div>`;
           }
 
-          uploadButton.disabled = false;
-          buttonText.textContent = 'Upload Files';
-          buttonSpinner.classList.add('hidden');
-          clearQueueButton.disabled = false;
-
-          fileInput.value = '';
-          fetchFiles();
-      }
-
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const files = fileInput.files; // We might want to look at queue items instead
-        if (uploadItemsList.children.length > 0) {
-            processUploadQueue(files);
-        } else {
-             showToast('Please select files to upload.', 'info');
-        }
-      });
-
-      fileInput.addEventListener('change', () => {
-        if (fileInput.files.length > 0) {
-            uploadQueue.classList.remove('hidden');
-            uploadItemsList.innerHTML = '';
-            Array.from(fileInput.files).forEach(file => {
-                addFileToQueue(file);
-            });
-        } else {
-            uploadQueue.classList.add('hidden');
-             uploadItemsList.innerHTML = '';
-        }
-         uploadButton.disabled = fileInput.files.length === 0;
-          clearQueueButton.disabled = fileInput.files.length === 0;
-      });
-
-
-      // --- File Listing and Search ---
-      function renderFiles(filesToRender) {
-        fileListContainer.innerHTML = ''
-
-         if (filesToRender.length === 0) {
-            fileListContainer.innerHTML = '<p class="text-center text-gray-600">No files found.</p>';
-            return
-        }
-
-        filesToRender
-          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          .forEach((file) => {
-            const fileItem = document.createElement('div')
-            fileItem.className = 'file-item hover:shadow-md transition-shadow duration-200 border border-gray-100'
-            
-            let icon = '<svg style="width: 40px; height: 40px; margin-right: 16px;" class="text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>';
-            if (file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
-               icon = '<svg style="width: 40px; height: 40px; margin-right: 16px;" class="text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
-            } else if (file.name.match(/\.(mp4|webm|ogg|mov)$/i)) {
-               icon = '<svg style="width: 40px; height: 40px; margin-right: 16px;" class="text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>';
-            }
-
-            fileItem.innerHTML = `
-            <div class="file-info flex items-center">
-              ${icon}
-              <div class="overflow-hidden">
-                  <div class="file-name text-lg font-medium text-gray-800 truncate" title="${file.name}">${file.name}</div>
-                  <div class="file-meta text-sm text-gray-500 mt-1 flex flex-wrap gap-x-3">
-                    <span class="flex items-center"><svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg> ${formatSize(file.size)}</span>
-                    <span class="flex items-center"><svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> ${formatDate(file.created_at)}</span>
-                    <span class="flex items-center px-2 py-0.5 rounded-full bg-gray-100 text-xs font-medium uppercase tracking-wide text-gray-600 border border-gray-200">${file.storage_type}</span>
-                  </div>
-              </div>
-            </div>
-            <div class="file-actions flex items-center space-x-3 mt-4 md:mt-0">
-              <a href="/files/uploads/${file.id}" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-blue-600 transition-colors p-2 rounded-full hover:bg-blue-50" title="Download">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-              </a>
-              <a href="#" onclick="event.preventDefault(); copyToClipboard('${window.location.origin}/files/uploads/${file.id}')" class="text-gray-500 hover:text-purple-600 transition-colors p-2 rounded-full hover:bg-purple-50" title="Copy Link">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-              </a>
-              <button onclick="event.preventDefault(); deleteFile('${file.id}', this)" class="text-gray-500 hover:text-red-600 transition-colors p-2 rounded-full hover:bg-red-50" title="Delete">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-              </button>
+          fileItem.innerHTML = `
+            ${previewContent}
+            <div class="p-3 flex flex-col flex-grow">
+                <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate transition-colors duration-300" title="${file.name}">${file.name}</h3>
+                <div class="mt-1 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">
+                    <span>${formatSize(file.size)}</span>
+                    <span class="uppercase border border-gray-200 dark:border-gray-600 rounded px-1 transition-colors duration-300">${file.storage_type}</span>
+                </div>
             </div>
           `
-            fileListContainer.appendChild(fileItem)
-          })
+          fileListContainer.appendChild(fileItem)
+        })
+    }
+
+
+    async function fetchFiles() {
+      if (allFiles.length === 0) {
+        fileListContainer.className = '';
+        fileListContainer.innerHTML = '<div class="text-center text-gray-600 py-12"><div class="spinner spinner-gray mx-auto mb-2"></div> Loading files...</div>'
       }
 
+      const response = await fetch('/files/uploads?limit=500')
 
-      async function fetchFiles() {
-        if (allFiles.length === 0) {
-             fileListContainer.innerHTML = '<p class="text-center text-gray-600"><div class="spinner spinner-gray mx-auto mb-2"></div> Loading files...</p>'
-        }
+      if (!response.ok) {
+        console.error('Failed to fetch files')
+        fileListContainer.innerHTML = '<p class="text-center text-red-600">Failed to load files.</p>'
+        showToast('Failed to fetch file list.', 'error');
+        return
+      }
 
-        const response = await fetch('/files/uploads?limit=500')
+      const data = await response.json()
+      allFiles = data
+      filterFiles();
+    }
+
+    function filterFiles() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const filteredFiles = allFiles.filter(file =>
+        file.name.toLowerCase().includes(searchTerm) ||
+        file.storage_type.toLowerCase().includes(searchTerm) ||
+        (file.id && file.id.toLowerCase().includes(searchTerm))
+      );
+      renderFiles(filteredFiles);
+    }
+
+    // --- Delete Functionality ---
+    async function deleteFile(fileId, buttonElement) {
+      if (!confirm('Are you sure you want to delete this file? This cannot be undone.')) {
+        return false;
+      }
+
+      buttonElement.disabled = true;
+      const originalText = buttonElement.textContent;
+      buttonElement.textContent = 'Deleting...';
+
+
+      try {
+        const response = await fetch(`/files/uploads/${fileId}`, {
+          method: 'DELETE',
+        });
 
         if (!response.ok) {
-          console.error('Failed to fetch files')
-          fileListContainer.innerHTML = '<p class="text-center text-red-600">Failed to load files.</p>'
-          showToast('Failed to fetch file list.', 'error');
-          return
+          const errorData = await response.json().catch(() => ({error: 'Unknown error'}));
+          console.error('Failed to delete file:', response.status, errorData);
+          showToast(`Failed to delete file: ${errorData.error || response.statusText}`, 'error');
+          buttonElement.disabled = false;
+          buttonElement.textContent = originalText;
+          return false;
         }
 
-        const data = await response.json()
-        allFiles = data
+        showToast('File deleted successfully!', 'success');
+        allFiles = allFiles.filter(file => file.id !== fileId);
         filterFiles();
+        return true;
+
+      } catch (error) {
+        console.error('Network error during file deletion:', error);
+        showToast('Network error during file deletion.', 'error');
+        buttonElement.disabled = false;
+        buttonElement.textContent = originalText;
+        return false;
       }
+    }
 
-      function filterFiles() {
-          const searchTerm = searchInput.value.toLowerCase();
-          const filteredFiles = allFiles.filter(file =>
-              file.name.toLowerCase().includes(searchTerm) ||
-              file.storage_type.toLowerCase().includes(searchTerm) ||
-              (file.id && file.id.toLowerCase().includes(searchTerm))
-          );
-          renderFiles(filteredFiles);
+
+    // --- Utility Functions ---
+    async function copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast('Link copied to clipboard!', 'success', 3000);
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+        showToast('Failed to copy link.', 'error');
       }
+    }
 
-      // --- Delete Functionality ---
-      async function deleteFile(fileId, buttonElement) {
-          if (!confirm('Are you sure you want to delete this file? This cannot be undone.')) {
-              return;
-          }
+    searchInput.addEventListener('input', filterFiles);
+    clearQueueButton.addEventListener('click', clearUploadQueue);
 
-          buttonElement.disabled = true;
-          buttonElement.textContent = 'Deleting...';
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        uploadQueue.classList.remove('hidden');
+        uploadButton.disabled = false;
+        clearQueueButton.disabled = false;
 
-
-          try {
-              const response = await fetch(`/files/uploads/${fileId}`, {
-                  method: 'DELETE',
-              });
-
-              if (!response.ok) {
-                  const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-                  console.error('Failed to delete file:', response.status, errorData);
-                  showToast(`Failed to delete file: ${errorData.error || response.statusText}`, 'error');
-                  buttonElement.disabled = false;
-                  buttonElement.textContent = 'Delete';
-                  return;
-              }
-
-              showToast('File deleted successfully!', 'success');
-              allFiles = allFiles.filter(file => file.id !== fileId);
-              filterFiles();
-
-          } catch (error) {
-              console.error('Network error during file deletion:', error);
-              showToast('Network error during file deletion.', 'error');
-              buttonElement.disabled = false;
-              buttonElement.textContent = 'Delete';
-          }
+        uploadItemsList.innerHTML = '';
+        Array.from(fileInput.files).forEach(file => {
+          addFileToQueue(file);
+        });
+      } else {
+        uploadQueue.classList.add('hidden');
+        uploadButton.disabled = true;
+        clearQueueButton.disabled = true;
+        uploadItemsList.innerHTML = '';
       }
+    });
 
+    // --- Theme Toggle ---
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
-      // --- Utility Functions ---
-      async function copyToClipboard(text) {
-          try {
-              await navigator.clipboard.writeText(text);
-              showToast('Link copied to clipboard!', 'success', 3000);
-          } catch (err) {
-              console.error('Failed to copy text: ', err);
-              showToast('Failed to copy link.', 'error');
-          }
-      }
+    // Check preference
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        themeToggleLightIcon.classList.remove('hidden');
+    } else {
+        document.documentElement.classList.remove('dark');
+        themeToggleDarkIcon.classList.remove('hidden');
+    }
 
-      searchInput.addEventListener('input', filterFiles);
-      clearQueueButton.addEventListener('click', clearUploadQueue);
+    themeToggleBtn.addEventListener('click', function() {
+        // Toggle icons
+        themeToggleDarkIcon.classList.toggle('hidden');
+        themeToggleLightIcon.classList.toggle('hidden');
 
-      fileInput.addEventListener('change', () => {
-        if (fileInput.files.length > 0) {
-            uploadQueue.classList.remove('hidden');
-            uploadButton.disabled = false;
-            clearQueueButton.disabled = false;
-
-            uploadItemsList.innerHTML = '';
-            Array.from(fileInput.files).forEach(file => {
-                addFileToQueue(file);
-            });
+        // Toggle theme
+        if (localStorage.getItem('color-theme')) {
+            if (localStorage.getItem('color-theme') === 'light') {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            }
         } else {
-            uploadQueue.classList.add('hidden');
-            uploadButton.disabled = true;
-            clearQueueButton.disabled = true;
-             uploadItemsList.innerHTML = '';
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
         }
-      });
+    });
 
-      document.addEventListener('DOMContentLoaded', () => {
-           uploadButton.disabled = true;
-           clearQueueButton.disabled = true;
-           fetchFiles();
-      });
+    document.addEventListener('DOMContentLoaded', () => {
+      uploadButton.disabled = true;
+      clearQueueButton.disabled = true;
+      fetchFiles();
+    });
 
-      setInterval(fetchFiles, 15000)
+    setInterval(fetchFiles, 15000)
 
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>
